@@ -1,0 +1,5 @@
+Stores trained models:
+.h5 (Keras)
+.pt (PyTorch)
+Versioned by date or experiment ID.
+Used for inference and deployment.

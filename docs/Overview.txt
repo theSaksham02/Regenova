@@ -1,0 +1,6 @@
+Markdown files or PDFs:
+- Project overview
+- Data flow diagrams
+- Model architecture diagrams
+- Citations and references
+- Useful for onboarding collaborators or writing papers.

@@ -1,0 +1,14 @@
+Subfolders:
+
+plots/:
+- Training/validation curves
+- Grad-CAM heatmaps
+- Cell count histograms
+
+predictions/:
+- Model outputs on test or unseen data
+- JSON/CSV format for easy analysis
+
+reports/:
+- Evaluation summaries
+- PDF/Markdown reports for presentations or publications

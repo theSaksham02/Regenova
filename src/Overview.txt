@@ -1,0 +1,43 @@
+Subfolders:
+
+Preprocessing/:
+Scripts for:
+    - CLAHE, Gaussian filtering
+    - U-Net segmentation
+    - Data augmentation (rotation, flipping, zoom)
+- Outputs go to data/processed/.
+
+ 
+Features/:
+Extracts:
+    - Morphological features (e.g., area, eccentricity)
+    - Deep features via pretrained CNNs (e.g., ResNet50 embeddings)
+- Outputs NumPy arrays or Pandas DataFrames.
+
+Models/:
+Contains:
+    - CNN for classification
+    - LSTM for time-series prediction
+    - Attention modules
+- Each model should be modularized (e.g., cnn.py, lstm.py).
+
+Training/:
+-Training loops using PyTorch or TensorFlow.
+-Includes:
+    - Loss functions (CrossEntropy, MSE)
+    - Optimizers (AdamW)
+    - Callbacks (early stopping, checkpointing)
+- Reads from configs/.
+
+Evaluation/:
+- Scripts for:
+    - Accuracy, precision, recall, F1-score
+    - Confusion matrix
+    - Grad-CAM visualization
+- Outputs go to results/.
+
+Deployment/:
+- Inference scripts for new images.
+- API endpoints (e.g., Flask/FastAPI).
+- MongoDB integration for storing results.
+- Dashboard logic (e.g., Streamlit, Dash).

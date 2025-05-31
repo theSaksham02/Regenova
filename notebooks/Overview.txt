@@ -1,0 +1,6 @@
+Jupyter notebooks for:
+- Visualizing raw and processed images.
+- Testing segmentation and augmentation.
+- Prototyping CNN/LSTM models.
+- Plotting training curves and Grad-CAM outputs.
+- Notebooks should be modular and well-commented for reproducibility.

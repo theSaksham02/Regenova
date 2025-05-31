@@ -1,0 +1,2 @@
+Lists all Python packages (e.g., tensorflow, opencv-python, scikit-learn)
+Enables environment replication via:

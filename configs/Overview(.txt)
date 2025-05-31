@@ -1,0 +1,5 @@
+YAML or JSON files for:
+- Model architecture (layers, dropout, etc.)
+- Training parameters (batch size, epochs, learning rate)
+- Data paths and augmentation settings
+- Enables reproducibility and easy experimentation.
