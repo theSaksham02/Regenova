@@ -1,0 +1,7 @@
+
+__pycache__/
+venv/
+*.pyc
+regenova.db
+saved_models/
+data/uploads/

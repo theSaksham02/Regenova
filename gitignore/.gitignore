@@ -59,7 +59,8 @@ secrets/
 *.pkl
 *.onnx
 *.tflite
-
+# Overy estimated remEMBER of the model                                           
 # Misc
 *.bak
-*.tmp
+*.tmp 
+ 
