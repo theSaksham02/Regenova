@@ -1,4 +1,3 @@
-
 import os
 import shutil
 import pytest
@@ -6,6 +5,9 @@ from fastapi.testclient import TestClient
 from app.main import app
 import cv2
 import numpy as np
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 client = TestClient(app)
 
