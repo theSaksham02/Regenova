@@ -49,6 +49,10 @@ svg {
 .page {
   position: relative;
   min-height: 100vh;
+  --cursor-x: 0px;
+  --cursor-y: 0px;
+  --cursor-x-soft: 0px;
+  --cursor-y-soft: 0px;
 }
 
 .backdrop {
@@ -59,6 +63,17 @@ svg {
   z-index: 0;
 }
 
+.backdrop::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(circle at 20% 20%, rgba(79, 108, 255, 0.12), transparent 45%),
+    radial-gradient(circle at 80% 10%, rgba(139, 201, 255, 0.18), transparent 40%),
+    radial-gradient(circle at 60% 80%, rgba(122, 92, 255, 0.14), transparent 48%);
+  filter: blur(10px);
+  animation: drift 18s ease-in-out infinite;
+}
+
 .grid-overlay {
   position: absolute;
   inset: 0;
@@ -66,7 +81,37 @@ svg {
     linear-gradient(0deg, var(--line) 1px, transparent 1px);
   background-size: 140px 140px;
   opacity: 0.7;
+  animation: gridShift 22s linear infinite;
   mask-image: radial-gradient(circle at 50% 15%, #000 25%, transparent 70%);
+}
+
+.grid-label {
+  position: absolute;
+  font-size: 10px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: rgba(13, 15, 18, 0.24);
+  opacity: 0.6;
+}
+
+.grid-label.label-1 {
+  top: 18%;
+  left: 12%;
+}
+
+.grid-label.label-2 {
+  top: 30%;
+  right: 18%;
+}
+
+.grid-label.label-3 {
+  bottom: 34%;
+  left: 20%;
+}
+
+.grid-label.label-4 {
+  bottom: 22%;
+  right: 14%;
 }
 
 .flow-lines {
@@ -75,6 +120,11 @@ svg {
   left: -5%;
   width: 110%;
   opacity: 0.5;
+}
+
+.flow-lines path {
+  stroke-dasharray: 6 12;
+  animation: flow 10s linear infinite;
 }
 
 .ambient-glow {
@@ -86,6 +136,23 @@ svg {
   top: 18%;
   right: -10%;
   filter: blur(8px);
+  transform: translate3d(var(--cursor-x-soft, 0px), var(--cursor-y-soft, 0px), 0);
+  transition: transform 0.25s ease;
+  animation: float 12s ease-in-out infinite;
+}
+
+.cursor-glow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(79, 108, 255, 0.22), transparent 70%);
+  top: 42%;
+  left: 18%;
+  filter: blur(6px);
+  opacity: 0.7;
+  transform: translate3d(var(--cursor-x, 0px), var(--cursor-y, 0px), 0);
+  transition: transform 0.18s ease;
 }
 
 .container {
@@ -160,7 +227,6 @@ svg {
   display: flex;
   flex-direction: column;
   gap: 22px;
-  animation: fadeUp 0.9s ease forwards;
 }
 
 .eyebrow {
@@ -170,16 +236,36 @@ svg {
   color: var(--muted);
 }
 
+.launch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(15, 18, 26, 0.08);
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  width: fit-content;
+}
+
+.launch-badge span {
+  font-weight: 600;
+  color: var(--ink);
+}
+
 .hero h1 {
   font-family: var(--font-display), "Segoe UI", sans-serif;
   font-size: clamp(40px, 4.8vw, 58px);
-  line-height: 1.05;
-  letter-spacing: -1px;
+  line-height: 1.02;
+  letter-spacing: -1.4px;
 }
 
 .lead {
-  font-size: 18px;
-  line-height: 1.7;
+  font-size: 19px;
+  line-height: 1.8;
+  letter-spacing: -0.2px;
   color: var(--muted);
   max-width: 520px;
 }
@@ -220,6 +306,11 @@ svg {
   background: #1b1f28;
 }
 
+.pulse-active {
+  box-shadow: 0 0 0 rgba(15, 18, 26, 0.24);
+  animation: activePulse 2.2s ease-in-out infinite;
+}
+
 .button-ghost {
   background: rgba(255, 255, 255, 0.7);
 }
@@ -233,7 +324,16 @@ svg {
 }
 
 .reveal {
-  animation: fadeUp 0.8s ease both;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hero-metrics {
@@ -263,8 +363,6 @@ svg {
   border: 1px solid rgba(79, 108, 255, 0.15);
   padding: 26px;
   box-shadow: var(--shadow);
-  animation: fadeUp 1s ease forwards;
-  animation-delay: 0.1s;
 }
 
 .panel-header,
@@ -299,6 +397,40 @@ svg {
   background: rgba(255, 255, 255, 0.8);
   border-radius: var(--radius-md);
   border: 1px solid rgba(13, 15, 18, 0.08);
+  position: relative;
+  overflow: hidden;
+  animation: signalFloat 6s ease-in-out infinite;
+}
+
+.signal-card::after {
+  content: "";
+  position: absolute;
+  inset: -40% -30%;
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(79, 108, 255, 0.2),
+    transparent 60%
+  );
+  opacity: 0.7;
+  transform: translateX(-60%);
+  animation: signalSweep 7s ease infinite;
+}
+
+.signal-card:nth-child(2) {
+  animation-delay: 1.2s;
+}
+
+.signal-card:nth-child(2)::after {
+  animation-delay: 2.2s;
+}
+
+.signal-card:nth-child(3) {
+  animation-delay: 2.4s;
+}
+
+.signal-card:nth-child(3)::after {
+  animation-delay: 3.8s;
 }
 
 .signal-title {
@@ -483,6 +615,19 @@ svg {
   border-color: rgba(79, 108, 255, 0.6);
 }
 
+.form-status {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.form-status.success {
+  color: #0f5132;
+}
+
+.form-status.error {
+  color: #b42318;
+}
+
 .about {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -553,6 +698,77 @@ svg {
   50% {
     transform: scale(1.1);
     opacity: 1;
+  }
+}
+
+@keyframes activePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(15, 18, 26, 0.24);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(15, 18, 26, 0);
+  }
+}
+
+@keyframes gridShift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 120px 160px;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-4%, 6%);
+  }
+}
+
+@keyframes flow {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -60;
+  }
+}
+
+@keyframes signalSweep {
+  0%,
+  100% {
+    transform: translateX(-60%);
+    opacity: 0.2;
+  }
+  45%,
+  55% {
+    transform: translateX(40%);
+    opacity: 0.7;
+  }
+}
+
+@keyframes signalFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
   }
 }
 
