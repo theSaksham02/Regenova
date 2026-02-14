@@ -5,3 +5,12 @@ venv/
 regenova.db
 saved_models/
 data/uploads/
+.DS_Store
+node_modules/
+.next/
+.env
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
