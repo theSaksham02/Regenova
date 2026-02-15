@@ -784,33 +784,40 @@ svg {
 .site-footer {
   padding: 60px 0 26px;
   border-top: none;
-  background: linear-gradient(180deg, #3a4f7a 0%, #4f6ac0 24%, #1c4a98 54%, #0a2857 76%, #010918 100%);
+  background:
+    radial-gradient(110% 58% at 50% -8%, rgba(214, 225, 255, 0.32) 0%, rgba(167, 189, 255, 0.1) 26%, rgba(96, 132, 233, 0.03) 48%, rgba(0, 0, 0, 0) 64%),
+    linear-gradient(180deg, #445a87 0%, #3558a8 26%, #173f8b 53%, #0a2a63 73%, #041839 88%, #020d21 100%);
+  background-size: 100% 100%, 120% 120%;
+  background-position: center, 50% 0%;
   color: #e8edf7;
   position: relative;
   overflow: hidden;
+  animation: footerGradientShift 20s ease-in-out infinite;
 }
 
 .site-footer::before {
   content: "";
   position: absolute;
-  inset: -58% -8% auto;
-  height: 74%;
-  background: radial-gradient(circle at top, rgba(226, 234, 255, 0.4), rgba(86, 126, 238, 0.1) 58%, transparent 72%);
-  opacity: 0.78;
+  inset: -15% -25% auto;
+  height: 55%;
+  background: radial-gradient(circle at 50% 0%, rgba(202, 220, 255, 0.26), rgba(126, 163, 255, 0.08) 42%, rgba(0, 0, 0, 0) 70%);
+  opacity: 0.9;
+  animation: footerGlowDrift 16s ease-in-out infinite;
 }
 
 .site-footer::after {
   content: "";
   position: absolute;
-  inset: 34% -16% auto;
-  height: 34%;
+  inset: 0 -15%;
   background: linear-gradient(
-    180deg,
-    rgba(5, 17, 37, 0.62) 0%,
-    rgba(3, 12, 28, 0.28) 34%,
-    rgba(1, 7, 19, 0.74) 100%
+    110deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(188, 211, 255, 0.11) 38%,
+    rgba(255, 255, 255, 0) 63%
   );
   pointer-events: none;
+  transform: translateX(-35%);
+  animation: footerSheen 14s linear infinite;
 }
 
 .footer-top {
@@ -834,8 +841,8 @@ svg {
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0.38) 12%,
-    rgba(255, 255, 255, 0.24) 88%,
+    rgba(255, 255, 255, 0.34) 12%,
+    rgba(255, 255, 255, 0.18) 88%,
     rgba(255, 255, 255, 0)
   );
 }
@@ -1086,6 +1093,43 @@ svg {
   100% {
     transform: translate(-50%, 0);
     opacity: 0.4;
+  }
+}
+
+@keyframes footerGradientShift {
+  0%,
+  100% {
+    background-position: center, 42% 0%;
+  }
+  50% {
+    background-position: center, 58% 8%;
+  }
+}
+
+@keyframes footerGlowDrift {
+  0%,
+  100% {
+    transform: translateX(-1.5%) translateY(0);
+  }
+  50% {
+    transform: translateX(1.5%) translateY(3%);
+  }
+}
+
+@keyframes footerSheen {
+  0% {
+    transform: translateX(-34%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  45% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateX(34%);
+    opacity: 0;
   }
 }
 
