@@ -784,7 +784,7 @@ svg {
 .site-footer {
   padding: 60px 0 26px;
   border-top: none;
-  background: linear-gradient(180deg, #24385e 0%, #3554a2 28%, #123a80 58%, #081f49 78%, #030f28 100%);
+  background: linear-gradient(180deg, #3a4f7a 0%, #4f6ac0 24%, #1c4a98 54%, #0a2857 76%, #010918 100%);
   color: #e8edf7;
   position: relative;
   overflow: hidden;
@@ -795,8 +795,8 @@ svg {
   position: absolute;
   inset: -58% -8% auto;
   height: 74%;
-  background: radial-gradient(circle at top, rgba(210, 221, 255, 0.32), rgba(64, 108, 228, 0.06) 58%, transparent 72%);
-  opacity: 0.72;
+  background: radial-gradient(circle at top, rgba(226, 234, 255, 0.4), rgba(86, 126, 238, 0.1) 58%, transparent 72%);
+  opacity: 0.78;
 }
 
 .site-footer::after {
@@ -806,9 +806,9 @@ svg {
   height: 34%;
   background: linear-gradient(
     180deg,
-    rgba(6, 20, 44, 0.56) 0%,
-    rgba(5, 18, 40, 0.22) 34%,
-    rgba(2, 12, 29, 0.56) 100%
+    rgba(5, 17, 37, 0.62) 0%,
+    rgba(3, 12, 28, 0.28) 34%,
+    rgba(1, 7, 19, 0.74) 100%
   );
   pointer-events: none;
 }
