@@ -9,21 +9,29 @@ const PIPELINE_STEPS = [
     number: "01",
     title: "Image Input",
     body: "Brightfield stem cell images are ingested securely.",
+    lottie:
+      "https://assets10.lottiefiles.com/packages/lf20_ikvz7qhc.json",
   },
   {
     number: "02",
     title: "AI Processing",
     body: "CNNs extract morphology while temporal models track change.",
+    lottie:
+      "https://assets7.lottiefiles.com/packages/lf20_Cc8Bpg.json",
   },
   {
     number: "03",
     title: "Prediction",
     body: "Stage classification and progression scoring in real time.",
+    lottie:
+      "https://assets10.lottiefiles.com/packages/lf20_qp1q7mct.json",
   },
   {
     number: "04",
     title: "Interpretability",
     body: "Heatmaps reveal why the model made each decision.",
+    lottie:
+      "https://assets8.lottiefiles.com/packages/lf20_WdTEui.json",
   },
 ];
 
@@ -39,6 +47,7 @@ export default function Home() {
   const pipelineFillRef = useRef<HTMLDivElement | null>(null);
   const pipelineNodeRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const stepCardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const lottieRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [formState, setFormState] = useState<FormState>("idle");
   const [footerState, setFooterState] = useState<FormState>("idle");
   const [typedHeadline, setTypedHeadline] = useState("");
@@ -108,6 +117,43 @@ export default function Home() {
       if (raf) {
         cancelAnimationFrame(raf);
       }
+    };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    const disposers: Array<() => void> = [];
+
+    const run = async () => {
+      const lottieModule = await import("lottie-web");
+      const lottie = lottieModule.default;
+
+      if (!mounted) return;
+
+      PIPELINE_STEPS.forEach((step, index) => {
+        const container = lottieRefs.current[index];
+        if (!container) return;
+
+        const instance = lottie.loadAnimation({
+          container,
+          renderer: "svg",
+          loop: true,
+          autoplay: true,
+          path: step.lottie,
+          rendererSettings: {
+            preserveAspectRatio: "xMidYMid meet",
+          },
+        });
+
+        disposers.push(() => instance.destroy());
+      });
+    };
+
+    void run();
+
+    return () => {
+      mounted = false;
+      disposers.forEach((dispose) => dispose());
     };
   }, []);
 
@@ -648,6 +694,13 @@ export default function Home() {
                     stepCardRefs.current[index] = node;
                   }}
                 >
+                  <div
+                    className="step-lottie"
+                    ref={(node) => {
+                      lottieRefs.current[index] = node;
+                    }}
+                    aria-hidden="true"
+                  />
                   <span className="step-number">{step.number}</span>
                   <h4>{step.title}</h4>
                   <p>{step.body}</p>
