@@ -814,10 +814,33 @@ svg {
   gap: 54px;
   padding-top: 26px;
   padding-bottom: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   position: relative;
   z-index: 1;
+}
+
+.footer-top::before,
+.footer-top::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.38) 12%,
+    rgba(255, 255, 255, 0.24) 88%,
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.footer-top::before {
+  top: 0;
+}
+
+.footer-top::after {
+  bottom: 0;
 }
 
 .footer-left {
@@ -849,8 +872,24 @@ svg {
   grid-template-columns: 1fr auto;
   gap: 14px;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   padding-bottom: 8px;
+  position: relative;
+}
+
+.footer-input-row::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.82) 50%,
+    rgba(255, 255, 255, 0.52)
+  );
 }
 
 .footer-form input {
