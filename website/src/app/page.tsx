@@ -167,8 +167,12 @@ export default function Home() {
       <header className="site-header">
         <div className="container nav">
           <div className="logo">
-            <span className="logo-mark" aria-hidden="true" />
-            Regenova
+            <img
+              src="/regenova-mark.svg"
+              alt="Regenova logo"
+              className="logo-image"
+            />
+            <span>Regenova</span>
           </div>
           <nav className="nav-links">
             <a href="#research">Research</a>
@@ -189,6 +193,11 @@ export default function Home() {
                 <span>Launch</span>
                 Research waitlist now open
               </div>
+              <img
+                src="/regenova-mark.svg"
+                alt="Regenova mark"
+                className="hero-logo"
+              />
               <h1>AI-Driven Precision for Stem Cell Differentiation</h1>
               <p className="lead">
                 Regenova uses deep learning to analyze stem cell differentiation
