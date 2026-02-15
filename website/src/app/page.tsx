@@ -544,59 +544,81 @@ export default function Home() {
       </main>
 
       <footer className="site-footer">
-        <div className="container footer-grid">
-          <p>Regenova (c) 2026</p>
-          <div className="footer-links">
-            <a href="mailto:research@regenova.ai">research@regenova.ai</a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
-              LinkedIn
-            </a>
-            <a href="#waitlist">Research Collaboration Enquiries</a>
+        <div className="container footer-top">
+          <div className="footer-left">
+            <p className="footer-title">Get latest updates on Regenova.</p>
+            <form
+              className="footer-form"
+              action={FORMSPREE_ENDPOINT}
+              method="POST"
+              onSubmit={handleFooterSubmit}
+              aria-busy={footerState === "sending"}
+              data-busy={footerState === "sending"}
+            >
+              <label className="footer-label" htmlFor="footer-email">
+                Enter your email
+              </label>
+              <div className="footer-input-row">
+                <input
+                  id="footer-email"
+                  type="email"
+                  name="email"
+                  placeholder="you@lab.edu"
+                  required
+                  disabled={footerState === "sending" || footerState === "success"}
+                />
+                <button
+                  type="submit"
+                  className="footer-submit"
+                  disabled={footerState === "sending" || footerState === "success"}
+                >
+                  {footerState === "sending"
+                    ? "Sending..."
+                    : footerState === "success"
+                      ? "You're in"
+                      : "Sign up"}
+                </button>
+              </div>
+              <input type="hidden" name="source" value="regenova-footer" />
+              {footerState === "success" && (
+                <p className="form-status success" role="status">
+                  Thanks. We'll send updates here.
+                </p>
+              )}
+              {footerState === "error" && (
+                <p className="form-status error" role="status">
+                  Something went wrong. Please try again.
+                </p>
+              )}
+            </form>
+          </div>
+          <div className="footer-links-group">
+            <div>
+              <p className="footer-link-title">Research</p>
+              <a href="#research">Program</a>
+              <a href="#how">Method</a>
+              <a href="#story">Insights</a>
+            </div>
+            <div>
+              <p className="footer-link-title">Connect</p>
+              <a href="mailto:research@regenova.ai">Email</a>
+              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+              <a href="#waitlist">Collaboration</a>
+            </div>
           </div>
         </div>
-        <div className="container footer-cta">
-          <form
-            className="footer-form"
-            action={FORMSPREE_ENDPOINT}
-            method="POST"
-            onSubmit={handleFooterSubmit}
-            aria-busy={footerState === "sending"}
-            data-busy={footerState === "sending"}
-          >
-            <label className="footer-label" htmlFor="footer-email">
-              Get updates
-            </label>
-            <input
-              id="footer-email"
-              type="email"
-              name="email"
-              placeholder="you@lab.edu"
-              required
-              disabled={footerState === "sending" || footerState === "success"}
-            />
-            <button
-              type="submit"
-              className="button button-primary"
-              disabled={footerState === "sending" || footerState === "success"}
-            >
-              {footerState === "sending"
-                ? "Sending..."
-                : footerState === "success"
-                  ? "You're in"
-                  : "Notify me"}
-            </button>
-            <input type="hidden" name="source" value="regenova-footer" />
-            {footerState === "success" && (
-              <p className="form-status success" role="status">
-                Thanks. We'll send updates here.
-              </p>
-            )}
-            {footerState === "error" && (
-              <p className="form-status error" role="status">
-                Something went wrong. Please try again.
-              </p>
-            )}
-          </form>
+        <div className="container footer-bottom">
+          <div className="footer-meta">
+            <span>Privacy Policy</span>
+            <span>Terms of Service</span>
+            <span>Regenova (c) 2026</span>
+          </div>
+        </div>
+        <div className="footer-brand">
+          <img src="/image.png" alt="Regenova logo" />
+          <span>Regenova</span>
         </div>
       </footer>
     </div>
