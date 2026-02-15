@@ -888,6 +888,101 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <section className="section legal-section" id="privacy-policy">
+          <div className="container legal-grid" data-reveal-group>
+            <article className="legal-card reveal tilt-card" data-reveal>
+              <p className="legal-kicker">Privacy Policy</p>
+              <h3>Regenova Privacy Policy</h3>
+              <p className="legal-meta">
+                Effective Date: 12th May, 2025 | Company: Regenova
+              </p>
+              <p>
+                Regenova is committed to protecting your privacy and safeguarding
+                your data. This policy explains what we collect, how we use it,
+                and how we secure it when you use our website.
+              </p>
+              <h4>1. Information We Collect</h4>
+              <ul className="legal-list">
+                <li>Name and email address submitted via waitlist or contact forms.</li>
+                <li>Professional affiliation or organization, if voluntarily shared.</li>
+                <li>Website analytics data through cookies or similar tools.</li>
+              </ul>
+              <p>
+                We do not collect sensitive biomedical, patient, or clinical data
+                through this website.
+              </p>
+              <h4>2. How We Use Information</h4>
+              <ul className="legal-list">
+                <li>Provide updates regarding Regenova research and product direction.</li>
+                <li>Respond to collaboration, research, or partnership inquiries.</li>
+                <li>Improve website performance and user experience.</li>
+                <li>Share seed and early-stage funding updates where relevant.</li>
+              </ul>
+              <h4>3. Data Protection</h4>
+              <p>
+                Data is stored using reasonable technical and organizational
+                safeguards. Regenova does not sell personal data and does not
+                disclose personal data to third parties without consent, except
+                where legally required.
+              </p>
+              <h4>4. Data Retention and Rights</h4>
+              <p>
+                We retain submitted data only as long as necessary for the
+                purposes above. You may request access, correction, or deletion
+                of your data by contacting us.
+              </p>
+              <h4>5. Contact</h4>
+              <p>
+                For privacy questions or data requests, contact:
+                {" "}
+                <a href="mailto:research@regenova.ai">research@regenova.ai</a>
+              </p>
+            </article>
+
+            <article className="legal-card reveal tilt-card" data-reveal id="terms-of-service">
+              <p className="legal-kicker">Terms & Conditions</p>
+              <h3>Regenova Website Terms of Use</h3>
+              <p className="legal-meta">Company: Regenova</p>
+              <p>
+                By using this website, you agree to the following terms and
+                conditions.
+              </p>
+              <h4>1. Informational Use</h4>
+              <p>
+                Website content is provided for informational purposes only and
+                does not constitute medical, clinical, legal, or regulatory
+                advice.
+              </p>
+              <h4>2. Intellectual Property</h4>
+              <p>
+                All website text, graphics, research concepts, and system designs
+                are the intellectual property of Regenova. Unauthorized
+                reproduction, distribution, or commercial use is prohibited.
+              </p>
+              <h4>3. Forward-Looking Statements</h4>
+              <p>
+                Any mention of funding, partnerships, timelines, or future
+                capabilities is forward-looking and may change without notice.
+              </p>
+              <h4>4. No Warranty</h4>
+              <p>
+                Regenova makes no warranties regarding completeness, reliability,
+                or accuracy of website content and may update content at any time.
+              </p>
+              <h4>5. Limitation of Liability</h4>
+              <p>
+                Regenova is not liable for indirect, incidental, or consequential
+                damages arising from website use, to the extent permitted by law.
+              </p>
+              <h4>6. Governing Use</h4>
+              <p>
+                Continued use of this website indicates acceptance of the latest
+                posted terms and policies.
+              </p>
+            </article>
+          </div>
+        </section>
       </main>
 
       <footer className="site-footer">
@@ -958,8 +1053,8 @@ export default function Home() {
         </div>
         <div className="container footer-bottom">
           <div className="footer-meta">
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
+            <a href="#privacy-policy">Privacy Policy</a>
+            <a href="#terms-of-service">Terms of Service</a>
             <span>Regenova (c) 2026</span>
           </div>
         </div>
