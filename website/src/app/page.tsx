@@ -9,6 +9,7 @@ type FormState = "idle" | "sending" | "success" | "error";
 export default function Home() {
   const pageRef = useRef<HTMLDivElement | null>(null);
   const [formState, setFormState] = useState<FormState>("idle");
+  const [footerState, setFooterState] = useState<FormState>("idle");
 
   useEffect(() => {
     const page = pageRef.current;
@@ -105,11 +106,14 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submitForm = async (
+    event: React.FormEvent<HTMLFormElement>,
+    setState: (state: FormState) => void
+  ) => {
     event.preventDefault();
-    if (formState === "sending") return;
+    if (event.currentTarget.dataset.busy === "true") return;
 
-    setFormState("sending");
+    setState("sending");
 
     try {
       const formData = new FormData(event.currentTarget);
@@ -121,14 +125,20 @@ export default function Home() {
 
       if (response.ok) {
         event.currentTarget.reset();
-        setFormState("success");
+        setState("success");
       } else {
-        setFormState("error");
+        setState("error");
       }
     } catch {
-      setFormState("error");
+      setState("error");
     }
   };
+
+  const handleWaitlistSubmit = (event: React.FormEvent<HTMLFormElement>) =>
+    submitForm(event, setFormState);
+
+  const handleFooterSubmit = (event: React.FormEvent<HTMLFormElement>) =>
+    submitForm(event, setFooterState);
 
   return (
     <div className="page" ref={pageRef}>
@@ -185,7 +195,37 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="section hero" id="top">
+        <section className="hero-intro" id="top">
+          <div className="container hero-intro-content" data-reveal-group>
+            <img
+              src="/image.png"
+              alt="Regenova mark"
+              className="hero-intro-logo reveal"
+              data-reveal
+            />
+            <h1 className="hero-intro-title reveal" data-reveal>
+              Regenova
+            </h1>
+            <p className="hero-intro-subtitle reveal" data-reveal>
+              AI-first stem cell differentiation intelligence.
+            </p>
+            <a href="#problem" className="scroll-indicator reveal" data-reveal>
+              <span>Scroll</span>
+              <span className="scroll-dot" aria-hidden="true" />
+            </a>
+          </div>
+        </section>
+
+        <section className="press-bar" aria-label="Updates">
+          <div className="press-track">
+            <span>Preprint in preparation</span>
+            <span>Benchmark validation underway</span>
+            <span>Open to academic collaborations</span>
+            <span>Regenerative medicine focus</span>
+          </div>
+        </section>
+
+        <section className="section hero" id="hero">
           <div className="container hero-grid" data-reveal-group>
             <div className="hero-copy reveal" data-reveal>
               <p className="eyebrow">Regenova Research Initiative</p>
@@ -326,6 +366,32 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="section" id="story">
+          <div className="container">
+            <div className="section-header">
+              <h2>From imaging to insight</h2>
+              <p>Three movements that translate cells into actionable signal.</p>
+            </div>
+            <div className="story-grid" data-reveal-group>
+              <div className="story-card reveal" data-reveal>
+                <div className="story-icon">01</div>
+                <h4>Imaging</h4>
+                <p>Capture consistent brightfield frames across time.</p>
+              </div>
+              <div className="story-card reveal" data-reveal>
+                <div className="story-icon">02</div>
+                <h4>Model</h4>
+                <p>Deep networks interpret morphology and progression.</p>
+              </div>
+              <div className="story-card reveal" data-reveal>
+                <div className="story-icon">03</div>
+                <h4>Insight</h4>
+                <p>Surface interpretable differentiation signals instantly.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="section" id="impact">
           <div className="container">
             <div className="section-header">
@@ -402,8 +468,9 @@ export default function Home() {
                 className="waitlist-form"
                 action={FORMSPREE_ENDPOINT}
                 method="POST"
-                onSubmit={handleSubmit}
+                onSubmit={handleWaitlistSubmit}
                 aria-busy={formState === "sending"}
+                data-busy={formState === "sending"}
               >
                 <label className="input-group">
                   <span>Email</span>
@@ -486,6 +553,50 @@ export default function Home() {
             </a>
             <a href="#waitlist">Research Collaboration Enquiries</a>
           </div>
+        </div>
+        <div className="container footer-cta">
+          <form
+            className="footer-form"
+            action={FORMSPREE_ENDPOINT}
+            method="POST"
+            onSubmit={handleFooterSubmit}
+            aria-busy={footerState === "sending"}
+            data-busy={footerState === "sending"}
+          >
+            <label className="footer-label" htmlFor="footer-email">
+              Get updates
+            </label>
+            <input
+              id="footer-email"
+              type="email"
+              name="email"
+              placeholder="you@lab.edu"
+              required
+              disabled={footerState === "sending" || footerState === "success"}
+            />
+            <button
+              type="submit"
+              className="button button-primary"
+              disabled={footerState === "sending" || footerState === "success"}
+            >
+              {footerState === "sending"
+                ? "Sending..."
+                : footerState === "success"
+                  ? "You're in"
+                  : "Notify me"}
+            </button>
+            <input type="hidden" name="source" value="regenova-footer" />
+            {footerState === "success" && (
+              <p className="form-status success" role="status">
+                Thanks. We'll send updates here.
+              </p>
+            )}
+            {footerState === "error" && (
+              <p className="form-status error" role="status">
+                Something went wrong. Please try again.
+              </p>
+            )}
+          </form>
         </div>
       </footer>
     </div>
