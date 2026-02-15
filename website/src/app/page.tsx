@@ -4,6 +4,28 @@ import { useEffect, useRef, useState } from "react";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/REPLACE_ME";
 const HERO_HEADLINE = "AI-Driven Precision for Stem Cell Differentiation";
+const PIPELINE_STEPS = [
+  {
+    number: "01",
+    title: "Image Input",
+    body: "Brightfield stem cell images are ingested securely.",
+  },
+  {
+    number: "02",
+    title: "AI Processing",
+    body: "CNNs extract morphology while temporal models track change.",
+  },
+  {
+    number: "03",
+    title: "Prediction",
+    body: "Stage classification and progression scoring in real time.",
+  },
+  {
+    number: "04",
+    title: "Interpretability",
+    body: "Heatmaps reveal why the model made each decision.",
+  },
+];
 
 type FormState = "idle" | "sending" | "success" | "error";
 
@@ -11,13 +33,18 @@ export default function Home() {
   const pageRef = useRef<HTMLDivElement | null>(null);
   const metricsRef = useRef<HTMLDivElement | null>(null);
   const howRef = useRef<HTMLElement | null>(null);
+  const heroRef = useRef<HTMLElement | null>(null);
+  const heroCopyRef = useRef<HTMLDivElement | null>(null);
+  const backdropRef = useRef<HTMLDivElement | null>(null);
+  const pipelineFillRef = useRef<HTMLDivElement | null>(null);
+  const pipelineNodeRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const stepCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [formState, setFormState] = useState<FormState>("idle");
   const [footerState, setFooterState] = useState<FormState>("idle");
   const [typedHeadline, setTypedHeadline] = useState("");
   const [metricsStarted, setMetricsStarted] = useState(false);
   const [speedStat, setSpeedStat] = useState(0);
   const [accuracyStat, setAccuracyStat] = useState(0);
-  const [activePipelineStep, setActivePipelineStep] = useState(0);
 
   useEffect(() => {
     const page = pageRef.current;
@@ -138,38 +165,196 @@ export default function Home() {
   }, [metricsStarted]);
 
   useEffect(() => {
-    const section = howRef.current;
-    if (!section) return;
+    let ctx: { revert: () => void } | undefined;
 
-    let raf = 0;
+    const run = async () => {
+      const gsapModule = await import("gsap");
+      const scrollTriggerModule = await import("gsap/ScrollTrigger");
+      const gsap = gsapModule.gsap;
+      const ScrollTrigger = scrollTriggerModule.ScrollTrigger;
 
-    const updateStep = () => {
-      const rect = section.getBoundingClientRect();
-      const viewport = window.innerHeight;
-      const start = viewport * 0.75;
-      const end = -rect.height * 0.15;
-      const raw = (start - rect.top) / (start - end);
-      const clamped = Math.max(0, Math.min(1, raw));
-      setActivePipelineStep(Math.min(3, Math.floor(clamped * 4)));
-      raf = 0;
+      gsap.registerPlugin(ScrollTrigger);
+
+      ctx = gsap.context(() => {
+        if (backdropRef.current) {
+          gsap.fromTo(
+            backdropRef.current,
+            { yPercent: 0 },
+            {
+              yPercent: -8,
+              ease: "none",
+              scrollTrigger: {
+                trigger: document.documentElement,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: true,
+              },
+            }
+          );
+        }
+
+        if (heroRef.current && heroCopyRef.current) {
+          const heroTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: heroRef.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+
+          heroTl
+            .to(heroCopyRef.current, { y: -36, ease: "none" }, 0)
+            .to(".hero-logo", { scale: 1.08, y: -14, ease: "none" }, 0)
+            .to(".hero-panel", { y: -22, ease: "none" }, 0);
+        }
+
+        if (howRef.current && pipelineFillRef.current) {
+          const nodes = pipelineNodeRefs.current.filter(
+            (node): node is HTMLSpanElement => node !== null
+          );
+          const steps = stepCardRefs.current.filter(
+            (node): node is HTMLDivElement => node !== null
+          );
+
+          gsap.set(pipelineFillRef.current, { width: "25%" });
+          nodes.forEach((node, index) => {
+            gsap.set(node, {
+              backgroundColor: index === 0 ? "#4f6cff" : "#fff",
+              borderColor: index === 0 ? "#4f6cff" : "rgba(13, 15, 18, 0.25)",
+              boxShadow:
+                index === 0
+                  ? "0 0 0 5px rgba(79, 108, 255, 0.2)"
+                  : "0 0 0 0 rgba(79, 108, 255, 0)",
+            });
+          });
+
+          steps.forEach((step, index) => {
+            const progress = step.querySelector(".step-progress span");
+            gsap.set(step, {
+              y: index === 0 ? -4 : 0,
+              borderColor:
+                index === 0
+                  ? "rgba(79, 108, 255, 0.42)"
+                  : "rgba(13, 15, 18, 0.08)",
+              boxShadow:
+                index === 0
+                  ? "0 18px 38px rgba(43, 74, 173, 0.16)"
+                  : "0 18px 40px rgba(13, 15, 18, 0.06)",
+            });
+            if (progress) {
+              gsap.set(progress, { width: index === 0 ? "100%" : "0%" });
+            }
+          });
+
+          const howTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: howRef.current,
+              start: "top 68%",
+              end: "bottom 34%",
+              scrub: 0.6,
+            },
+          });
+
+          PIPELINE_STEPS.forEach((_, index) => {
+            const nextWidth = `${((index + 1) / PIPELINE_STEPS.length) * 100}%`;
+            const step = steps[index];
+            const node = nodes[index];
+            const progress = step?.querySelector(".step-progress span");
+
+            howTl.to(
+              pipelineFillRef.current,
+              { width: nextWidth, duration: 0.45, ease: "none" },
+              index
+            );
+
+            if (node) {
+              howTl.to(
+                node,
+                {
+                  backgroundColor: "#4f6cff",
+                  borderColor: "#4f6cff",
+                  boxShadow: "0 0 0 5px rgba(79, 108, 255, 0.2)",
+                  duration: 0.2,
+                },
+                index
+              );
+            }
+
+            if (step) {
+              howTl.to(
+                step,
+                {
+                  y: -4,
+                  borderColor: "rgba(79, 108, 255, 0.42)",
+                  boxShadow: "0 18px 38px rgba(43, 74, 173, 0.16)",
+                  duration: 0.2,
+                },
+                index
+              );
+            }
+
+            if (progress) {
+              howTl.to(progress, { width: "100%", duration: 0.2 }, index);
+            }
+          });
+        }
+      }, pageRef);
     };
 
-    const handleScroll = () => {
-      if (!raf) {
-        raf = requestAnimationFrame(updateStep);
-      }
-    };
-
-    updateStep();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
+    void run();
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-      if (raf) {
-        cancelAnimationFrame(raf);
+      if (ctx) {
+        ctx.revert();
       }
+    };
+  }, []);
+
+  useEffect(() => {
+    const cards = Array.from(
+      document.querySelectorAll<HTMLElement>(".tilt-card")
+    );
+    const canTilt = window.matchMedia("(pointer: fine)").matches;
+    if (!canTilt || cards.length === 0) return;
+
+    const cleanups: Array<() => void> = [];
+
+    cards.forEach((card) => {
+      let frame = 0;
+      const handleMove = (event: MouseEvent) => {
+        const bounds = card.getBoundingClientRect();
+        const px = (event.clientX - bounds.left) / bounds.width;
+        const py = (event.clientY - bounds.top) / bounds.height;
+        const rotateY = (px - 0.5) * 7;
+        const rotateX = (0.5 - py) * 7;
+
+        if (!frame) {
+          frame = requestAnimationFrame(() => {
+            card.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(
+              2
+            )}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-2px)`;
+            frame = 0;
+          });
+        }
+      };
+
+      const handleLeave = () => {
+        card.style.transform =
+          "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)";
+      };
+
+      card.addEventListener("mousemove", handleMove);
+      card.addEventListener("mouseleave", handleLeave);
+
+      cleanups.push(() => {
+        card.removeEventListener("mousemove", handleMove);
+        card.removeEventListener("mouseleave", handleLeave);
+      });
+    });
+
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
     };
   }, []);
 
@@ -239,7 +424,7 @@ export default function Home() {
 
   return (
     <div className="page" ref={pageRef}>
-      <div className="backdrop" aria-hidden="true">
+      <div className="backdrop" aria-hidden="true" ref={backdropRef}>
         <div className="grid-overlay" />
         <div className="grid-label label-1">Drift</div>
         <div className="grid-label label-2">Variance</div>
@@ -322,9 +507,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section hero" id="hero">
+        <section className="section hero" id="hero" ref={heroRef}>
           <div className="container hero-grid" data-reveal-group>
-            <div className="hero-copy reveal" data-reveal>
+            <div className="hero-copy reveal" data-reveal ref={heroCopyRef}>
               <p className="eyebrow">Regenova Research Initiative</p>
               <div className="launch-badge">
                 <span>Launch</span>
@@ -371,7 +556,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="hero-panel reveal" data-reveal>
+            <div className="hero-panel reveal tilt-card" data-reveal>
               <div className="panel-header">
                 <span>Brightfield input</span>
                 <span className="panel-pill">Live feed</span>
@@ -405,7 +590,7 @@ export default function Home() {
 
         <section className="section" id="problem">
           <div className="container split" data-reveal-group>
-            <div className="card reveal" data-reveal>
+            <div className="card reveal tilt-card" data-reveal>
               <h3>Problem</h3>
               <p>
                 Manual stem cell analysis is slow, error-prone, and difficult to
@@ -417,7 +602,7 @@ export default function Home() {
                 <li>Low consistency across labs</li>
               </ul>
             </div>
-            <div className="card card-accent reveal" data-reveal>
+            <div className="card card-accent reveal tilt-card" data-reveal>
               <h3>Solution</h3>
               <p>
                 Automated AI interpretation for consistent, real-time
@@ -442,62 +627,35 @@ export default function Home() {
               </p>
             </div>
             <div className="pipeline-track" aria-hidden="true">
-              <div
-                className="pipeline-fill"
-                style={{ width: `${((activePipelineStep + 1) / 4) * 100}%` }}
-              />
-              {[0, 1, 2, 3].map((step) => (
+              <div className="pipeline-fill" ref={pipelineFillRef} />
+              {PIPELINE_STEPS.map((_, index) => (
                 <span
-                  key={step}
-                  className={`pipeline-node ${activePipelineStep >= step ? "active" : ""}`}
+                  key={index}
+                  className="pipeline-node"
+                  ref={(node) => {
+                    pipelineNodeRefs.current[index] = node;
+                  }}
                 />
               ))}
             </div>
             <div className="steps-grid" data-reveal-group>
-              <div
-                className={`step-card reveal ${activePipelineStep >= 0 ? "active" : ""}`}
-                data-reveal
-              >
-                <span className="step-number">01</span>
-                <h4>Image Input</h4>
-                <p>Brightfield stem cell images are ingested securely.</p>
-                <div className="step-progress">
-                  <span className={activePipelineStep >= 0 ? "active" : ""} />
+              {PIPELINE_STEPS.map((step, index) => (
+                <div
+                  key={step.number}
+                  className="step-card reveal"
+                  data-reveal
+                  ref={(node) => {
+                    stepCardRefs.current[index] = node;
+                  }}
+                >
+                  <span className="step-number">{step.number}</span>
+                  <h4>{step.title}</h4>
+                  <p>{step.body}</p>
+                  <div className="step-progress">
+                    <span />
+                  </div>
                 </div>
-              </div>
-              <div
-                className={`step-card reveal ${activePipelineStep >= 1 ? "active" : ""}`}
-                data-reveal
-              >
-                <span className="step-number">02</span>
-                <h4>AI Processing</h4>
-                <p>CNNs extract morphology while temporal models track change.</p>
-                <div className="step-progress">
-                  <span className={activePipelineStep >= 1 ? "active" : ""} />
-                </div>
-              </div>
-              <div
-                className={`step-card reveal ${activePipelineStep >= 2 ? "active" : ""}`}
-                data-reveal
-              >
-                <span className="step-number">03</span>
-                <h4>Prediction</h4>
-                <p>Stage classification and progression scoring in real time.</p>
-                <div className="step-progress">
-                  <span className={activePipelineStep >= 2 ? "active" : ""} />
-                </div>
-              </div>
-              <div
-                className={`step-card reveal ${activePipelineStep >= 3 ? "active" : ""}`}
-                data-reveal
-              >
-                <span className="step-number">04</span>
-                <h4>Interpretability</h4>
-                <p>Heatmaps reveal why the model made each decision.</p>
-                <div className="step-progress">
-                  <span className={activePipelineStep >= 3 ? "active" : ""} />
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -509,17 +667,17 @@ export default function Home() {
               <p>Three movements that translate cells into actionable signal.</p>
             </div>
             <div className="story-grid" data-reveal-group>
-              <div className="story-card reveal" data-reveal>
+              <div className="story-card reveal tilt-card" data-reveal>
                 <div className="story-icon">01</div>
                 <h4>Imaging</h4>
                 <p>Capture consistent brightfield frames across time.</p>
               </div>
-              <div className="story-card reveal" data-reveal>
+              <div className="story-card reveal tilt-card" data-reveal>
                 <div className="story-icon">02</div>
                 <h4>Model</h4>
                 <p>Deep networks interpret morphology and progression.</p>
               </div>
-              <div className="story-card reveal" data-reveal>
+              <div className="story-card reveal tilt-card" data-reveal>
                 <div className="story-icon">03</div>
                 <h4>Insight</h4>
                 <p>Surface interpretable differentiation signals instantly.</p>
@@ -538,15 +696,15 @@ export default function Home() {
               </p>
             </div>
             <div className="impact-grid" data-reveal-group>
-              <div className="impact-card reveal" data-reveal>
+              <div className="impact-card reveal tilt-card" data-reveal>
                 <h4>60% faster analysis</h4>
                 <p>Automated inference reduces manual review time.</p>
               </div>
-              <div className="impact-card reveal" data-reveal>
+              <div className="impact-card reveal tilt-card" data-reveal>
                 <h4>90%+ benchmark accuracy</h4>
                 <p>Validated against expert-labeled datasets.</p>
               </div>
-              <div className="impact-card reveal" data-reveal>
+              <div className="impact-card reveal tilt-card" data-reveal>
                 <h4>Scalable and non-invasive</h4>
                 <p>Designed for high-throughput lab workflows.</p>
               </div>
@@ -561,15 +719,15 @@ export default function Home() {
               <p>Focused on teams who demand accuracy and traceability.</p>
             </div>
             <div className="audience-grid" data-reveal-group>
-              <div className="audience-card reveal" data-reveal>
+              <div className="audience-card reveal tilt-card" data-reveal>
                 <h4>Academic Research Labs</h4>
                 <p>Accelerate differentiation experiments with reliable data.</p>
               </div>
-              <div className="audience-card reveal" data-reveal>
+              <div className="audience-card reveal tilt-card" data-reveal>
                 <h4>Biotech & Pharma R&D</h4>
                 <p>Scale cell line studies without scaling headcount.</p>
               </div>
-              <div className="audience-card reveal" data-reveal>
+              <div className="audience-card reveal tilt-card" data-reveal>
                 <h4>Regenerative Medicine</h4>
                 <p>Build more consistent pipelines for clinical translation.</p>
               </div>
