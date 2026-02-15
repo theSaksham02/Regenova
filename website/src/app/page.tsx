@@ -168,7 +168,7 @@ export default function Home() {
         <div className="container nav">
           <div className="logo">
             <img
-              src="/regenova-mark.svg"
+              src="/logo_trans.jpg"
               alt="Regenova logo"
               className="logo-image"
             />
@@ -194,7 +194,7 @@ export default function Home() {
                 Research waitlist now open
               </div>
               <img
-                src="/regenova-mark.svg"
+                src="/logo_trans.jpg"
                 alt="Regenova mark"
                 className="hero-logo"
               />
