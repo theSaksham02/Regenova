@@ -315,6 +315,7 @@ svg {
   display: flex;
   flex-direction: column;
   gap: 22px;
+  animation: heroLift 8s ease-in-out infinite;
 }
 
 .eyebrow {
@@ -355,6 +356,20 @@ svg {
   font-size: clamp(40px, 4.8vw, 58px);
   line-height: 1.02;
   letter-spacing: -1.4px;
+}
+
+.type-reveal {
+  min-height: 2.2em;
+}
+
+.type-caret {
+  display: inline-block;
+  width: 0.08em;
+  height: 0.92em;
+  margin-left: 0.09em;
+  background: rgba(13, 15, 18, 0.82);
+  vertical-align: baseline;
+  animation: caretBlink 0.95s steps(1, end) infinite;
 }
 
 .lead {
@@ -437,6 +452,27 @@ svg {
   gap: 18px;
   font-size: 13px;
   color: var(--muted);
+}
+
+.metric-card {
+  border: 1px solid rgba(13, 15, 18, 0.1);
+  border-radius: 14px;
+  padding: 12px;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.94), rgba(234, 241, 255, 0.78)),
+    rgba(255, 255, 255, 0.82);
+  position: relative;
+  overflow: hidden;
+  animation: metricGlow 6s ease-in-out infinite;
+}
+
+.metric-card::after {
+  content: "";
+  position: absolute;
+  inset: -35% -40%;
+  background: linear-gradient(115deg, transparent 43%, rgba(101, 129, 255, 0.24), transparent 60%);
+  transform: translateX(-45%);
+  animation: metricSheen 7.8s linear infinite;
 }
 
 .metric-value {
@@ -621,6 +657,64 @@ svg {
   gap: 22px;
 }
 
+.pipeline-track {
+  position: relative;
+  height: 30px;
+  margin: 0 8px 24px;
+}
+
+.pipeline-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 14px;
+  height: 2px;
+  background: rgba(13, 15, 18, 0.14);
+}
+
+.pipeline-fill {
+  position: absolute;
+  left: 0;
+  top: 14px;
+  height: 2px;
+  background: linear-gradient(90deg, #4f6cff, #8ea6ff);
+  transition: width 0.55s ease;
+}
+
+.pipeline-node {
+  position: absolute;
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(13, 15, 18, 0.25);
+  background: #fff;
+  transition: all 0.45s ease;
+}
+
+.pipeline-node:nth-child(2) {
+  left: 0;
+}
+
+.pipeline-node:nth-child(3) {
+  left: calc(33.33% - 7px);
+}
+
+.pipeline-node:nth-child(4) {
+  left: calc(66.66% - 7px);
+}
+
+.pipeline-node:nth-child(5) {
+  right: 0;
+}
+
+.pipeline-node.active {
+  border-color: #4f6cff;
+  background: #4f6cff;
+  box-shadow: 0 0 0 5px rgba(79, 108, 255, 0.2);
+}
+
 .story-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -662,6 +756,37 @@ svg {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.step-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.step-card.active {
+  transform: translateY(-4px);
+  border-color: rgba(79, 108, 255, 0.42);
+  box-shadow: 0 18px 38px rgba(43, 74, 173, 0.16);
+}
+
+.step-progress {
+  margin-top: 6px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(13, 15, 18, 0.12);
+  overflow: hidden;
+}
+
+.step-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4f6cff, #9cb2ff);
+  transition: width 0.65s ease;
+}
+
+.step-progress span.active {
+  width: 100%;
 }
 
 .step-number {
@@ -1093,6 +1218,46 @@ svg {
   100% {
     transform: translate(-50%, 0);
     opacity: 0.4;
+  }
+}
+
+@keyframes caretBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes heroLift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes metricGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(79, 108, 255, 0);
+  }
+  50% {
+    box-shadow: 0 12px 24px rgba(79, 108, 255, 0.1);
+  }
+}
+
+@keyframes metricSheen {
+  0% {
+    transform: translateX(-48%);
+  }
+  100% {
+    transform: translateX(48%);
   }
 }
 

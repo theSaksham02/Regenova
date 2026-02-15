@@ -3,13 +3,21 @@
 import { useEffect, useRef, useState } from "react";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/REPLACE_ME";
+const HERO_HEADLINE = "AI-Driven Precision for Stem Cell Differentiation";
 
 type FormState = "idle" | "sending" | "success" | "error";
 
 export default function Home() {
   const pageRef = useRef<HTMLDivElement | null>(null);
+  const metricsRef = useRef<HTMLDivElement | null>(null);
+  const howRef = useRef<HTMLElement | null>(null);
   const [formState, setFormState] = useState<FormState>("idle");
   const [footerState, setFooterState] = useState<FormState>("idle");
+  const [typedHeadline, setTypedHeadline] = useState("");
+  const [metricsStarted, setMetricsStarted] = useState(false);
+  const [speedStat, setSpeedStat] = useState(0);
+  const [accuracyStat, setAccuracyStat] = useState(0);
+  const [activePipelineStep, setActivePipelineStep] = useState(0);
 
   useEffect(() => {
     const page = pageRef.current;
@@ -70,6 +78,95 @@ export default function Home() {
     return () => {
       window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("mouseleave", handleLeave);
+      if (raf) {
+        cancelAnimationFrame(raf);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 1;
+      setTypedHeadline(HERO_HEADLINE.slice(0, index));
+      if (index >= HERO_HEADLINE.length) {
+        window.clearInterval(timer);
+      }
+    }, 32);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const metricsNode = metricsRef.current;
+    if (!metricsNode) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setMetricsStarted(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    observer.observe(metricsNode);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!metricsStarted) return;
+
+    const duration = 1400;
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setSpeedStat(Math.round(60 * eased));
+      setAccuracyStat(Math.round(90 * eased));
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      }
+    };
+
+    requestAnimationFrame(tick);
+  }, [metricsStarted]);
+
+  useEffect(() => {
+    const section = howRef.current;
+    if (!section) return;
+
+    let raf = 0;
+
+    const updateStep = () => {
+      const rect = section.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      const start = viewport * 0.75;
+      const end = -rect.height * 0.15;
+      const raw = (start - rect.top) / (start - end);
+      const clamped = Math.max(0, Math.min(1, raw));
+      setActivePipelineStep(Math.min(3, Math.floor(clamped * 4)));
+      raf = 0;
+    };
+
+    const handleScroll = () => {
+      if (!raf) {
+        raf = requestAnimationFrame(updateStep);
+      }
+    };
+
+    updateStep();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
       if (raf) {
         cancelAnimationFrame(raf);
       }
@@ -238,7 +335,10 @@ export default function Home() {
                 alt="Regenova mark"
                 className="hero-logo"
               />
-              <h1>AI-Driven Precision for Stem Cell Differentiation</h1>
+              <h1 className="type-reveal" aria-label={HERO_HEADLINE}>
+                {typedHeadline}
+                <span className="type-caret" aria-hidden="true" />
+              </h1>
               <p className="lead">
                 Regenova uses deep learning to analyze stem cell differentiation
                 with speed, accuracy, and transparency. We are building the
@@ -256,16 +356,16 @@ export default function Home() {
                   View the Method
                 </a>
               </div>
-              <div className="hero-metrics">
-                <div>
-                  <span className="metric-value">60%</span>
+              <div className="hero-metrics" ref={metricsRef}>
+                <div className="metric-card">
+                  <span className="metric-value">{speedStat}%</span>
                   <span className="metric-label">Faster analysis</span>
                 </div>
-                <div>
-                  <span className="metric-value">90%+</span>
+                <div className="metric-card">
+                  <span className="metric-value">{accuracyStat}%+</span>
                   <span className="metric-label">Validated accuracy</span>
                 </div>
-                <div>
+                <div className="metric-card">
                   <span className="metric-value">Non-invasive</span>
                   <span className="metric-label">Ethical AI</span>
                 </div>
@@ -332,7 +432,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section" id="how">
+        <section className="section" id="how" ref={howRef}>
           <div className="container">
             <div className="section-header">
               <h2>How it works</h2>
@@ -341,26 +441,62 @@ export default function Home() {
                 precision without black-box ambiguity.
               </p>
             </div>
+            <div className="pipeline-track" aria-hidden="true">
+              <div
+                className="pipeline-fill"
+                style={{ width: `${((activePipelineStep + 1) / 4) * 100}%` }}
+              />
+              {[0, 1, 2, 3].map((step) => (
+                <span
+                  key={step}
+                  className={`pipeline-node ${activePipelineStep >= step ? "active" : ""}`}
+                />
+              ))}
+            </div>
             <div className="steps-grid" data-reveal-group>
-              <div className="step-card reveal" data-reveal>
+              <div
+                className={`step-card reveal ${activePipelineStep >= 0 ? "active" : ""}`}
+                data-reveal
+              >
                 <span className="step-number">01</span>
                 <h4>Image Input</h4>
                 <p>Brightfield stem cell images are ingested securely.</p>
+                <div className="step-progress">
+                  <span className={activePipelineStep >= 0 ? "active" : ""} />
+                </div>
               </div>
-              <div className="step-card reveal" data-reveal>
+              <div
+                className={`step-card reveal ${activePipelineStep >= 1 ? "active" : ""}`}
+                data-reveal
+              >
                 <span className="step-number">02</span>
                 <h4>AI Processing</h4>
                 <p>CNNs extract morphology while temporal models track change.</p>
+                <div className="step-progress">
+                  <span className={activePipelineStep >= 1 ? "active" : ""} />
+                </div>
               </div>
-              <div className="step-card reveal" data-reveal>
+              <div
+                className={`step-card reveal ${activePipelineStep >= 2 ? "active" : ""}`}
+                data-reveal
+              >
                 <span className="step-number">03</span>
                 <h4>Prediction</h4>
                 <p>Stage classification and progression scoring in real time.</p>
+                <div className="step-progress">
+                  <span className={activePipelineStep >= 2 ? "active" : ""} />
+                </div>
               </div>
-              <div className="step-card reveal" data-reveal>
+              <div
+                className={`step-card reveal ${activePipelineStep >= 3 ? "active" : ""}`}
+                data-reveal
+              >
                 <span className="step-number">04</span>
                 <h4>Interpretability</h4>
                 <p>Heatmaps reveal why the model made each decision.</p>
+                <div className="step-progress">
+                  <span className={activePipelineStep >= 3 ? "active" : ""} />
+                </div>
               </div>
             </div>
           </div>
@@ -421,7 +557,7 @@ export default function Home() {
         <section className="section" id="audience">
           <div className="container">
             <div className="section-header">
-              <h2>Who it's for</h2>
+              <h2>Who it&apos;s for</h2>
               <p>Focused on teams who demand accuracy and traceability.</p>
             </div>
             <div className="audience-grid" data-reveal-group>
@@ -503,13 +639,13 @@ export default function Home() {
                   {formState === "sending"
                     ? "Sending..."
                     : formState === "success"
-                      ? "You're in"
+                      ? "You&apos;re in"
                       : "Request Early Access"}
                 </button>
                 <input type="hidden" name="source" value="regenova-waitlist" />
                 {formState === "success" && (
                   <p className="form-status success" role="status">
-                    You're in. We'll share next steps shortly.
+                    You&apos;re in. We&apos;ll share next steps shortly.
                   </p>
                 )}
                 {formState === "error" && (
@@ -575,14 +711,14 @@ export default function Home() {
                   {footerState === "sending"
                     ? "Sending..."
                     : footerState === "success"
-                      ? "You're in"
+                      ? "You&apos;re in"
                       : "Sign up"}
                 </button>
               </div>
               <input type="hidden" name="source" value="regenova-footer" />
               {footerState === "success" && (
                 <p className="form-status success" role="status">
-                  Thanks. We'll send updates here.
+                  Thanks. We&apos;ll send updates here.
                 </p>
               )}
               {footerState === "error" && (
