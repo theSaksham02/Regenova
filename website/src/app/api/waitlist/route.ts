@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const APPS_SCRIPT_ENDPOINT =
-  "https://script.google.com/macros/s/AKfycbx0zhjWnwJWdBdCq35kDeUmpcGJhxjS3nqN1fQZ-JlBKt-tVihH9b1ugRDLBaz32bT0gQ/exec";
+  "https://script.google.com/macros/s/AKfycbx3dVoEE--g91Yj5F7EieVpkUXdiZOOYidIVdnuj6vGX0PA1XdHP6ENXgr2ybUw5NN4lw/exec";
 
 type WaitlistPayload = {
   email?: string;
