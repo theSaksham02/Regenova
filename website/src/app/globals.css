@@ -189,9 +189,9 @@ a {
 .text-gradient {
   background: linear-gradient(135deg, #000000 0%, #434343 100%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .hero-subtext {
@@ -453,7 +453,10 @@ body {
   margin-bottom: 8px;
   background: linear-gradient(135deg, #000 0%, #666 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
+  /* Standard replacement for text-fill-color */
 }
 
 /* Audience */
