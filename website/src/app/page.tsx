@@ -1000,8 +1000,8 @@ export default function Home() {
         </div>
         <div className="container footer-bottom">
           <div className="footer-meta">
-            <a href="#privacy-policy">Privacy Policy</a>
-            <a href="#terms-of-service">Terms of Service</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
             <span>Regenova (c) 2026</span>
           </div>
         </div>
