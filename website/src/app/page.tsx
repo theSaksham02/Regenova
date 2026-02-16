@@ -1,29 +1,40 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/REPLACE_ME";
 const HERO_HEADLINE = "AI-Driven Precision for Stem Cell Differentiation";
+const HERO_TAGLINES = [
+  "AI that sees what humans miss.",
+  "Built for regenerative medicine teams.",
+  "Research-grade interpretability, not black-box output.",
+];
+const NAV_SECTIONS = ["research", "how", "waitlist"] as const;
 const PIPELINE_STEPS = [
   {
     number: "01",
+    icon: "📸",
     title: "Image Input",
-    body: "Brightfield stem cell images are ingested securely.",
+    body: "Upload brightfield stem cell images securely.",
   },
   {
     number: "02",
+    icon: "🤖",
     title: "AI Processing",
-    body: "CNNs extract morphology while temporal models track change.",
+    body: "AI models process morphology and temporal progression.",
   },
   {
     number: "03",
+    icon: "📊",
     title: "Prediction",
-    body: "Stage classification and progression scoring in real time.",
+    body: "Get stage classification and progression scoring in real time.",
   },
   {
     number: "04",
+    icon: "🧪",
     title: "Interpretability",
-    body: "Heatmaps reveal why the model made each decision.",
+    body: "Review heatmaps to understand each decision pathway.",
   },
 ];
 
@@ -42,6 +53,9 @@ export default function Home() {
   const [formState, setFormState] = useState<FormState>("idle");
   const [footerState, setFooterState] = useState<FormState>("idle");
   const [typedHeadline, setTypedHeadline] = useState("");
+  const [activeSection, setActiveSection] =
+    useState<(typeof NAV_SECTIONS)[number]>("research");
+  const [taglineIndex, setTaglineIndex] = useState(0);
   const [metricsStarted, setMetricsStarted] = useState(false);
   const [speedStat, setSpeedStat] = useState(0);
   const [accuracyStat, setAccuracyStat] = useState(0);
@@ -122,6 +136,39 @@ export default function Home() {
     }, 32);
 
     return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setTaglineIndex((current) => (current + 1) % HERO_TAGLINES.length);
+    }, 3200);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const sections = NAV_SECTIONS.map((id) => document.getElementById(id)).filter(
+      (section): section is HTMLElement => section !== null
+    );
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible.length === 0) return;
+
+        const next = visible[0].target.id as (typeof NAV_SECTIONS)[number];
+        setActiveSection(next);
+      },
+      {
+        threshold: [0.35, 0.5, 0.75],
+        rootMargin: "-24% 0px -56% 0px",
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -467,8 +514,18 @@ export default function Home() {
             <span>Regenova</span>
           </div>
           <nav className="nav-links">
-            <a href="#research">Research</a>
-            <a href="#how">Method</a>
+            <a
+              href="#research"
+              className={activeSection === "research" ? "active" : undefined}
+            >
+              Research
+            </a>
+            <a
+              href="#how"
+              className={activeSection === "how" ? "active" : undefined}
+            >
+              Method
+            </a>
             <a href="#waitlist" className="button button-small">
               Join Waitlist
             </a>
@@ -508,6 +565,12 @@ export default function Home() {
         </section>
 
         <section className="section hero" id="hero" ref={heroRef}>
+          <div className="hero-network" aria-hidden="true">
+            <span className="node node-a" />
+            <span className="node node-b" />
+            <span className="node node-c" />
+            <span className="node node-d" />
+          </div>
           <div className="container hero-grid" data-reveal-group>
             <div className="hero-copy reveal" data-reveal ref={heroCopyRef}>
               <p className="eyebrow">Regenova Research Initiative</p>
@@ -530,6 +593,14 @@ export default function Home() {
                 research layer that makes regenerative medicine more reliable
                 and scalable.
               </p>
+              <p className="rotating-tagline" key={HERO_TAGLINES[taglineIndex]}>
+                {HERO_TAGLINES[taglineIndex]}
+              </p>
+              <div className="trust-badges">
+                <span>Validated with expert datasets</span>
+                <span>Collaborating with top labs</span>
+                <span>Preprint in preparation</span>
+              </div>
               <div className="hero-actions">
                 <a
                   href="#waitlist"
@@ -537,21 +608,42 @@ export default function Home() {
                 >
                   Join the Research Waitlist
                 </a>
-                <a href="#how" className="button button-ghost">
-                  View the Method
+                <a href="mailto:research@regenova.ai" className="button button-ghost">
+                  Request Demo
                 </a>
               </div>
               <div className="hero-metrics" ref={metricsRef}>
                 <div className="metric-card">
-                  <span className="metric-value">{speedStat}%</span>
+                  <div
+                    className="metric-ring"
+                    style={
+                      { "--metric-progress": `${Math.min(speedStat, 100)}%` } as CSSProperties
+                    }
+                  >
+                    <span className="metric-value">{speedStat}%</span>
+                  </div>
                   <span className="metric-label">Faster analysis</span>
                 </div>
                 <div className="metric-card">
-                  <span className="metric-value">{accuracyStat}%+</span>
+                  <div
+                    className="metric-ring"
+                    style={
+                      {
+                        "--metric-progress": `${Math.min(accuracyStat, 100)}%`,
+                      } as CSSProperties
+                    }
+                  >
+                    <span className="metric-value">{accuracyStat}%+</span>
+                  </div>
                   <span className="metric-label">Validated accuracy</span>
                 </div>
                 <div className="metric-card">
-                  <span className="metric-value">Non-invasive</span>
+                  <div
+                    className="metric-ring"
+                    style={{ "--metric-progress": "100%" } as CSSProperties}
+                  >
+                    <span className="metric-value">Ethical</span>
+                  </div>
                   <span className="metric-label">Ethical AI</span>
                 </div>
               </div>
@@ -616,6 +708,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <div className="section-divider" aria-hidden="true" />
 
         <section className="section" id="how" ref={howRef}>
           <div className="container">
@@ -649,6 +742,9 @@ export default function Home() {
                   }}
                 >
                   <span className="step-number">{step.number}</span>
+                  <span className="step-icon" aria-hidden="true">
+                    {step.icon}
+                  </span>
                   <h4>{step.title}</h4>
                   <p>{step.body}</p>
                   <div className="step-progress">
@@ -657,8 +753,22 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            <div className="pipeline-diagram" data-reveal-group>
+              {PIPELINE_STEPS.map((step, index) => (
+                <div key={step.number} className="diagram-stage reveal" data-reveal>
+                  <span>{step.number}</span>
+                  <p>{step.title}</p>
+                  {index < PIPELINE_STEPS.length - 1 && (
+                    <em className="diagram-arrow" aria-hidden="true">
+                      →
+                    </em>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
+        <div className="section-divider" aria-hidden="true" />
 
         <section className="section" id="story">
           <div className="container">
@@ -711,6 +821,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <div className="section-divider" aria-hidden="true" />
 
         <section className="section" id="audience">
           <div className="container">
@@ -744,6 +855,32 @@ export default function Home() {
                 models, publishing results, and collaborating with academic and
                 industry partners before productization.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="section" id="trust">
+          <div className="container">
+            <div className="section-header">
+              <h2>Early support signals</h2>
+              <p>
+                We are in active conversation with research stakeholders ahead
+                of formal pilot launches.
+              </p>
+            </div>
+            <div className="trust-grid" data-reveal-group>
+              <article className="trust-card reveal tilt-card" data-reveal>
+                <p className="trust-title">Pre-publication pilots</p>
+                <p>Initial pilot partners are being shortlisted.</p>
+              </article>
+              <article className="trust-card reveal tilt-card" data-reveal>
+                <p className="trust-title">Academic interest</p>
+                <p>Inbound collaboration interest from research labs.</p>
+              </article>
+              <article className="trust-card reveal tilt-card" data-reveal>
+                <p className="trust-title">Labs in discussion</p>
+                <p>Method validation discussions are currently underway.</p>
+              </article>
             </div>
           </div>
         </section>
@@ -1010,6 +1147,10 @@ export default function Home() {
           <span>Regenova</span>
         </div>
       </footer>
+
+      <a className="floating-cta" href="#waitlist">
+        Join Waitlist →
+      </a>
     </div>
   );
 }

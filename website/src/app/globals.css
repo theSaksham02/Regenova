@@ -205,6 +205,32 @@ svg {
   color: var(--muted);
 }
 
+.nav-links a {
+  position: relative;
+  transition: color 0.24s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  width: 100%;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.26s ease;
+}
+
+.nav-links a.active {
+  color: var(--ink);
+}
+
+.nav-links a.active::after {
+  transform: scaleX(1);
+}
+
 .nav-links a:hover {
   color: var(--ink);
 }
@@ -302,7 +328,60 @@ svg {
 }
 
 .hero {
+  position: relative;
   padding-top: 140px;
+}
+
+.hero-network {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-network::before {
+  content: "";
+  position: absolute;
+  top: 18%;
+  left: 12%;
+  width: 76%;
+  height: 40%;
+  border-top: 1px solid rgba(79, 108, 255, 0.24);
+  border-bottom: 1px dashed rgba(79, 108, 255, 0.16);
+  border-radius: 100px;
+  animation: lineDrift 16s ease-in-out infinite;
+}
+
+.hero-network .node {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(79, 108, 255, 0.8);
+  box-shadow: 0 0 0 8px rgba(79, 108, 255, 0.12);
+  animation: nodePulse 5s ease-in-out infinite;
+}
+
+.hero-network .node-a {
+  top: 20%;
+  left: 18%;
+}
+
+.hero-network .node-b {
+  top: 33%;
+  right: 20%;
+  animation-delay: 1s;
+}
+
+.hero-network .node-c {
+  top: 42%;
+  left: 42%;
+  animation-delay: 2.2s;
+}
+
+.hero-network .node-d {
+  top: 56%;
+  right: 34%;
+  animation-delay: 2.8s;
 }
 
 .hero-grid {
@@ -379,6 +458,30 @@ svg {
   letter-spacing: -0.2px;
   color: var(--muted);
   max-width: 520px;
+}
+
+.rotating-tagline {
+  color: #243f8a;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+  animation: fadeUp 0.45s ease;
+}
+
+.trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.trust-badges span {
+  border: 1px solid rgba(79, 108, 255, 0.22);
+  border-radius: 999px;
+  padding: 6px 11px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #2a3c74;
 }
 
 .hero-actions {
@@ -465,6 +568,17 @@ svg {
   position: relative;
   overflow: hidden;
   animation: metricGlow 6s ease-in-out infinite;
+}
+
+.metric-ring {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 58%, transparent 60%),
+    conic-gradient(#4f6cff var(--metric-progress, 0%), rgba(79, 108, 255, 0.14) 0%);
 }
 
 .metric-card::after {
@@ -722,6 +836,20 @@ svg {
   gap: 24px;
 }
 
+.section-divider {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(79, 108, 255, 0) 0%,
+    rgba(79, 108, 255, 0.36) 20%,
+    rgba(79, 108, 255, 0.36) 80%,
+    rgba(79, 108, 255, 0) 100%
+  );
+  opacity: 0.45;
+}
+
 .story-card {
   padding: 26px;
   border-radius: var(--radius-md);
@@ -802,6 +930,57 @@ svg {
   color: var(--accent);
 }
 
+.step-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid rgba(79, 108, 255, 0.24);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  background: rgba(79, 108, 255, 0.08);
+}
+
+.pipeline-diagram {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.diagram-stage {
+  position: relative;
+  border: 1px solid rgba(13, 15, 18, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.84);
+  padding: 14px 14px 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.diagram-stage span {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.diagram-stage p {
+  font-size: 13px;
+  color: #273247;
+}
+
+.diagram-arrow {
+  position: absolute;
+  right: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(79, 108, 255, 0.66);
+  font-style: normal;
+  font-size: 16px;
+  z-index: 1;
+}
+
 .research-block {
   background: #10131a;
   color: #fff;
@@ -815,6 +994,29 @@ svg {
   color: rgba(255, 255, 255, 0.7);
   max-width: 700px;
   line-height: 1.6;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.trust-card {
+  padding: 22px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(13, 15, 18, 0.08);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(236, 244, 255, 0.86));
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 8px;
+}
+
+.trust-title {
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #3652a8;
 }
 
 .waitlist {
@@ -1318,6 +1520,27 @@ svg {
   filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.35));
 }
 
+.floating-cta {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 8;
+  border-radius: 999px;
+  padding: 12px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  background: linear-gradient(135deg, rgba(13, 29, 68, 0.94), rgba(33, 67, 150, 0.92));
+  color: #eef3ff;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 14px 28px rgba(7, 16, 39, 0.34);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.floating-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 32px rgba(7, 16, 39, 0.42);
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -1348,6 +1571,18 @@ svg {
   }
   50% {
     box-shadow: 0 0 0 8px rgba(15, 18, 26, 0);
+  }
+}
+
+@keyframes nodePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.22);
+    opacity: 1;
   }
 }
 
@@ -1526,7 +1761,8 @@ svg {
 @media (max-width: 1100px) {
   .steps-grid,
   .impact-grid,
-  .audience-grid {
+  .audience-grid,
+  .trust-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1536,6 +1772,14 @@ svg {
 
   .hero-grid {
     grid-template-columns: 1fr;
+  }
+
+  .pipeline-diagram {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .diagram-arrow {
+    display: none;
   }
 
   .legal-grid {
@@ -1609,6 +1853,12 @@ svg {
   .legal-page {
     padding: 56px 16px;
   }
+
+  .floating-cta {
+    right: 16px;
+    bottom: 16px;
+    padding: 11px 16px;
+  }
 }
 
 @media (max-width: 520px) {
@@ -1619,6 +1869,11 @@ svg {
 
   .button {
     width: 100%;
+  }
+
+  .pipeline-diagram,
+  .trust-grid {
+    grid-template-columns: 1fr;
   }
 }
 
