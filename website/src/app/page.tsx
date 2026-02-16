@@ -553,7 +553,7 @@ export default function Home() {
         <div className="container nav">
           <div className="logo">
             <img
-              src="/image.png"
+              src="/logo_trans.jpg"
               alt="Regenova logo"
               className="logo-image"
             />
@@ -645,7 +645,7 @@ export default function Home() {
                 Research waitlist now open
               </div>
               <img
-                src="/image.png"
+                src="/logo_trans.jpg"
                 alt="Regenova mark"
                 className="hero-logo"
               />
@@ -1140,7 +1140,7 @@ export default function Home() {
         <div className="container footer-grid reveal" data-reveal>
           <div className="footer-column">
             <div className="footer-brandline">
-              <img src="/image.png" alt="Regenova logo" />
+              <img src="/logo_trans.jpg" alt="Regenova logo" />
               <span>Regenova</span>
             </div>
             <p className="footer-tagline">

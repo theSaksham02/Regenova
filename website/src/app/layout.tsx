@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   description:
     "Regenova applies AI to stem cell differentiation, enabling faster, more transparent research workflows.",
   icons: {
-    icon: [{ url: "/favicon.ico" }],
-    apple: [{ url: "/image.png", type: "image/png" }],
+    icon: [{ url: "/favicon.ico?v=regenova-r" }],
+    apple: [{ url: "/logo_trans.jpg", type: "image/jpeg" }],
   },
 };
 
