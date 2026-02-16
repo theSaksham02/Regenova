@@ -3,8 +3,7 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 
-const WAITLIST_ENDPOINT =
-  "https://script.google.com/macros/s/AKfycbxjxDr87tyJkwQCe9EDdDxZVu62PNd5nEen6G_25g0KNkZwXMa-YXnN4A3tcZ-1we46/exec";
+const WAITLIST_ENDPOINT = "/api/waitlist";
 const HERO_HEADLINE = "AI-Driven Precision for Stem Cell Differentiation";
 const HERO_TAGLINES = [
   "AI that sees what humans miss.",
