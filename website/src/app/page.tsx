@@ -113,24 +113,58 @@ export default function Home() {
         {/* SECTION 2: WHAT IS REGENOVA (Problem -> Solution) */}
         <section className="section-white" id="problem-solution">
           <div className="container">
-            <h2 className="section-heading">The Challenge vs. The Solution</h2>
-            <div className="grid-2-col split-panel">
-              <div className="panel-left">
-                <h3>The Problem</h3>
-                <ul className="list-problem">
-                  <li>Manual stem cell analysis</li>
-                  <li>Time-consuming & expensive</li>
-                  <li>Error-prone human review</li>
-                  <li>Not scalable for high-throughput</li>
+            <h2 className="section-heading text-center mb-12">The Challenge vs. The Solution</h2>
+
+            <div className="comparison-grid">
+              {/* Problem Card - Muted, Technical */}
+              <div className="spec-card problem">
+                <div className="card-header">
+                  <span className="spec-tag">LEGACY_METHOD</span>
+                  <h3>The Problem</h3>
+                </div>
+                <ul className="spec-list">
+                  <li>
+                    <span className="icon-cross">✕</span>
+                    <span>Manual stem cell analysis</span>
+                  </li>
+                  <li>
+                    <span className="icon-cross">✕</span>
+                    <span>Time-consuming & expensive</span>
+                  </li>
+                  <li>
+                    <span className="icon-cross">✕</span>
+                    <span>Error-prone human review</span>
+                  </li>
+                  <li>
+                    <span className="icon-cross">✕</span>
+                    <span>Not scalable for high-throughput</span>
+                  </li>
                 </ul>
               </div>
-              <div className="panel-right">
-                <h3>The Solution</h3>
-                <ul className="list-solution">
-                  <li>AI-powered image analysis</li>
-                  <li>CNN + temporal modeling</li>
-                  <li>Real-time stage predictions</li>
-                  <li>Interpretable outputs (Heatmaps)</li>
+
+              {/* Solution Card - Clean, Elevated */}
+              <div className="spec-card solution">
+                <div className="card-header">
+                  <span className="spec-tag active">REGENOVA_AI</span>
+                  <h3>The Solution</h3>
+                </div>
+                <ul className="spec-list">
+                  <li>
+                    <span className="icon-check">✓</span>
+                    <span>AI-powered image analysis</span>
+                  </li>
+                  <li>
+                    <span className="icon-check">✓</span>
+                    <span>CNN + temporal modeling</span>
+                  </li>
+                  <li>
+                    <span className="icon-check">✓</span>
+                    <span>Real-time stage predictions</span>
+                  </li>
+                  <li>
+                    <span className="icon-check">✓</span>
+                    <span>Interpretable outputs (Heatmaps)</span>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -267,13 +301,47 @@ export default function Home() {
 
       </main>
 
-      <footer className="footer" id="contact">
+      <footer className="footer-large" id="contact">
         <div className="container">
-          <div className="footer-content">
-            <div className="copyright">Regenova &copy; 2026</div>
-            <div className="footer-links">
-              <a href="mailto:research@regenova.ai">Research Collaboration Enquiries</a>
-              <a href="https://linkedin.com">LinkedIn</a>
+          <div className="footer-top">
+            <div className="footer-brand-section">
+              <h4>Get latest updates<br />on Regenova Research.</h4>
+              <form className="footer-newsletter">
+                <input type="email" placeholder="Enter your email" />
+                <button type="submit">SIGN UP</button>
+              </form>
+            </div>
+
+            <div className="footer-links-grid">
+              <div className="footer-column">
+                <h5>PLATFORM</h5>
+                <a href="#how-it-works">Technology</a>
+                <a href="#impact">Impact</a>
+                <a href="#demo">Demo</a>
+              </div>
+              <div className="footer-column">
+                <h5>COMPANY</h5>
+                <a href="#about">About</a>
+                <a href="#research">Research</a>
+                <a href="mailto:careers@regenova.ai">Careers</a>
+              </div>
+              <div className="footer-column">
+                <h5>CONNECT</h5>
+                <a href="https://twitter.com">Twitter</a>
+                <a href="https://linkedin.com">LinkedIn</a>
+                <a href="https://github.com">GitHub</a>
+              </div>
+            </div>
+          </div>
+
+          <div className="footer-bottom">
+            <h1 className="huge-brand-text">REGENOVA</h1>
+            <div className="footer-legal">
+              <span>© 2026 Regenova Inc.</span>
+              <div className="legal-links">
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+              </div>
             </div>
           </div>
         </div>
