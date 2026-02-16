@@ -14,25 +14,21 @@ const NAV_SECTIONS = ["research", "how", "waitlist"] as const;
 const PIPELINE_STEPS = [
   {
     number: "01",
-    icon: "📸",
     title: "Image Input",
     body: "Upload brightfield stem cell images securely.",
   },
   {
     number: "02",
-    icon: "🤖",
     title: "AI Processing",
     body: "AI models process morphology and temporal progression.",
   },
   {
     number: "03",
-    icon: "📊",
     title: "Prediction",
     body: "Get stage classification and progression scoring in real time.",
   },
   {
     number: "04",
-    icon: "🧪",
     title: "Interpretability",
     body: "Review heatmaps to understand each decision pathway.",
   },
@@ -742,27 +738,11 @@ export default function Home() {
                   }}
                 >
                   <span className="step-number">{step.number}</span>
-                  <span className="step-icon" aria-hidden="true">
-                    {step.icon}
-                  </span>
                   <h4>{step.title}</h4>
                   <p>{step.body}</p>
                   <div className="step-progress">
                     <span />
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className="pipeline-diagram" data-reveal-group>
-              {PIPELINE_STEPS.map((step, index) => (
-                <div key={step.number} className="diagram-stage reveal" data-reveal>
-                  <span>{step.number}</span>
-                  <p>{step.title}</p>
-                  {index < PIPELINE_STEPS.length - 1 && (
-                    <em className="diagram-arrow" aria-hidden="true">
-                      →
-                    </em>
-                  )}
                 </div>
               ))}
             </div>
