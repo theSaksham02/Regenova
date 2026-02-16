@@ -324,12 +324,12 @@ export default function Home() {
               <div className="footer-column">
                 <h5>COMPANY</h5>
                 <a href="#about">About</a>
-                <a href="#mission">Our Mission</a>
                 <a href="mailto:careers@regenova.ai">Careers</a>
               </div>
               <div className="footer-column">
                 <h5>CONNECT</h5>
-                <a href="mailto:research@regenova.ai">Contact</a>
+                <a href="https://chatgpt.com/g/g-67528e0861108191986c757755b404d0-regenova" target="_blank" rel="noopener noreferrer">Chat via ChatGPT</a>
+                {/* <a href="#about">More in About</a> */}
               </div>
             </div>
           </div>
