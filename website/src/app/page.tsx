@@ -58,8 +58,11 @@ export default function Home() {
       </Head>
 
       <div className="video-background-wrapper">
-        <div className="tech-grid-overlay" />
+        <div className="tech-grid-overlay">
+          <div className="tech-grid-dots" />
+        </div>
         <div className="active-scan-line" />
+        <div className="blue-glow-frame" />
         <video
           className={`hero-video ${videoLoaded ? "loaded" : ""}`}
           autoPlay
