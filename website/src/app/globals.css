@@ -165,8 +165,11 @@ svg {
 }
 
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 5;
   background: transparent;
   border-bottom: 1px solid transparent;
@@ -245,6 +248,7 @@ svg {
 
 .section {
   padding: 110px 0;
+  scroll-margin-top: 96px;
 }
 
 .fullscreen-hero {
