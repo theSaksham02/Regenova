@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const response = await fetch(APPS_SCRIPT_ENDPOINT, {
+    const jsonAttempt = await fetch(APPS_SCRIPT_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,30 +32,80 @@ export async function POST(request: Request) {
     });
 
     let upstream: { ok?: boolean; error?: string } | null = null;
+    let rawBody = "";
     try {
-      upstream = (await response.json()) as { ok?: boolean; error?: string };
+      rawBody = await jsonAttempt.text();
+      upstream = JSON.parse(rawBody) as { ok?: boolean; error?: string };
     } catch {
       upstream = null;
     }
 
-    if (!response.ok) {
+    if (jsonAttempt.ok && upstream?.ok === true) {
+      return NextResponse.json({ ok: true });
+    }
+
+    // Fallback for Apps Script projects expecting form-urlencoded payloads.
+    const fallbackPayload = new URLSearchParams();
+    fallbackPayload.set("email", payload.email);
+    fallbackPayload.set("role", payload.role || "");
+    fallbackPayload.set("source", payload.source || "");
+    fallbackPayload.set("message", payload.message || "");
+
+    const formAttempt = await fetch(APPS_SCRIPT_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        Accept: "application/json,text/plain,*/*",
+      },
+      body: fallbackPayload.toString(),
+      cache: "no-store",
+    });
+
+    let fallbackUpstream: { ok?: boolean; error?: string } | null = null;
+    let fallbackRawBody = "";
+    try {
+      fallbackRawBody = await formAttempt.text();
+      fallbackUpstream = JSON.parse(fallbackRawBody) as {
+        ok?: boolean;
+        error?: string;
+      };
+    } catch {
+      fallbackUpstream = null;
+    }
+
+    if (formAttempt.ok && fallbackUpstream?.ok === true) {
+      return NextResponse.json({ ok: true });
+    }
+
+    const snippet = (fallbackRawBody || rawBody || "No response body")
+      .slice(0, 240)
+      .replace(/\s+/g, " ");
+
+    if (fallbackUpstream?.ok === false || upstream?.ok === false) {
       return NextResponse.json(
-        { ok: false, error: "Upstream submission failed" },
+        {
+          ok: false,
+          error:
+            fallbackUpstream?.error ||
+            upstream?.error ||
+            "Upstream mail/send failed",
+          detail: snippet,
+        },
         { status: 502 }
       );
     }
 
-    if (upstream && upstream.ok === false) {
-      return NextResponse.json(
-        { ok: false, error: upstream.error || "Upstream mail/send failed" },
-        { status: 502 }
-      );
-    }
-
-    return NextResponse.json({ ok: true });
-  } catch {
     return NextResponse.json(
-      { ok: false, error: "Submission failed" },
+      { ok: false, error: "Upstream submission failed", detail: snippet },
+      { status: 502 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Submission failed",
+        detail: error instanceof Error ? error.message : "unknown error",
+      },
       { status: 500 }
     );
   }

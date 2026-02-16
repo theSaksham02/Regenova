@@ -457,6 +457,15 @@ export default function Home() {
         event.currentTarget.reset();
         setState("success");
       } else {
+        try {
+          const errorBody = (await response.json()) as {
+            error?: string;
+            detail?: string;
+          };
+          console.error("Waitlist submit error:", errorBody.error, errorBody.detail);
+        } catch {
+          console.error("Waitlist submit error: non-json response");
+        }
         setState("error");
       }
     } catch {
