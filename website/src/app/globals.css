@@ -239,35 +239,106 @@ svg {
   padding: 110px 0;
 }
 
-.hero-intro {
-  padding: 150px 0 90px;
-  text-align: center;
-}
-
-.hero-intro-content {
+.fullscreen-hero {
+  min-height: 100vh;
+  position: relative;
   display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(150deg, #161f4a 0%, #173465 52%, #0f5f73 100%);
+}
+
+.fullscreen-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: grid;
+  gap: 18px;
   justify-items: center;
-  gap: 16px;
 }
 
-.hero-intro-logo {
-  width: 115px;
-  height: 115px;
-  object-fit: contain;
-  filter: drop-shadow(0 22px 36px rgba(13, 15, 18, 0.2));
-}
-
-.hero-intro-title {
+.fullscreen-title {
   font-family: var(--font-display), "Segoe UI", sans-serif;
-  font-size: clamp(36px, 4vw, 52px);
-  letter-spacing: -1px;
+  font-size: clamp(36px, 6vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -1.4px;
+  color: #f2f6ff;
+  animation: heroFadeUp 0.9s ease both;
 }
 
-.hero-intro-subtitle {
-  color: var(--muted);
-  font-size: 16px;
-  max-width: 520px;
-  line-height: 1.6;
+.fullscreen-subtitle {
+  font-size: clamp(18px, 2vw, 26px);
+  color: rgba(227, 238, 255, 0.9);
+  animation: heroFadeUp 0.9s ease 0.14s both;
+}
+
+.fullscreen-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: heroFadeUp 0.9s ease 0.24s both;
+}
+
+.network-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.network-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+}
+
+.network-lines path {
+  stroke: rgba(182, 229, 255, 0.55);
+  stroke-width: 1.1;
+  stroke-dasharray: 5 10;
+  animation: flow 10s linear infinite;
+}
+
+.network-dot {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(201, 242, 255, 0.85);
+  box-shadow: 0 0 0 10px rgba(142, 217, 255, 0.12);
+  animation: nodePulse 4.6s ease-in-out infinite;
+}
+
+.dot-1 {
+  top: 22%;
+  left: 14%;
+}
+
+.dot-2 {
+  top: 36%;
+  left: 36%;
+  animation-delay: 0.8s;
+}
+
+.dot-3 {
+  top: 28%;
+  right: 20%;
+  animation-delay: 1.4s;
+}
+
+.dot-4 {
+  bottom: 31%;
+  left: 45%;
+  animation-delay: 1.9s;
+}
+
+.dot-5 {
+  bottom: 27%;
+  right: 16%;
+  animation-delay: 2.5s;
 }
 
 .scroll-indicator {
@@ -527,6 +598,22 @@ svg {
 
 .button-ghost {
   background: rgba(255, 255, 255, 0.7);
+}
+
+.fullscreen-hero .button-primary {
+  background: #f4f8ff;
+  color: #12264d;
+  border-color: #f4f8ff;
+}
+
+.fullscreen-hero .button-primary:hover {
+  background: #ffffff;
+}
+
+.fullscreen-hero .button-ghost {
+  background: rgba(255, 255, 255, 0.12);
+  color: #eef5ff;
+  border-color: rgba(230, 240, 255, 0.32);
 }
 
 .button-small {
@@ -1494,6 +1581,17 @@ svg {
   from {
     opacity: 0;
     transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
   }
   to {
     opacity: 1;

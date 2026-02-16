@@ -544,33 +544,35 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="hero-intro" id="top">
-          <div className="container hero-intro-content" data-reveal-group>
-            <img
-              src="/image.png"
-              alt="Regenova mark"
-              className="hero-intro-logo reveal"
-              data-reveal
-            />
-            <h1 className="hero-intro-title reveal" data-reveal>
-              Regenova
-            </h1>
-            <p className="hero-intro-subtitle reveal" data-reveal>
-              AI-first stem cell differentiation intelligence.
-            </p>
-            <a href="#problem" className="scroll-indicator reveal" data-reveal>
-              <span>Scroll</span>
-              <span className="scroll-dot" aria-hidden="true" />
-            </a>
+        <section className="fullscreen-hero" id="top">
+          <div className="network-layer" aria-hidden="true">
+            <span className="network-dot dot-1" />
+            <span className="network-dot dot-2" />
+            <span className="network-dot dot-3" />
+            <span className="network-dot dot-4" />
+            <span className="network-dot dot-5" />
+            <svg
+              className="network-lines"
+              viewBox="0 0 1200 600"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M120 140 L420 220 L700 170 L980 260" />
+              <path d="M220 360 L510 290 L760 360 L1060 320" />
+              <path d="M360 480 L560 390 L900 430" />
+            </svg>
           </div>
-        </section>
-
-        <section className="press-bar" aria-label="Updates">
-          <div className="press-track">
-            <span>Preprint in preparation</span>
-            <span>Benchmark validation underway</span>
-            <span>Open to academic collaborations</span>
-            <span>Regenerative medicine focus</span>
+          <div className="container fullscreen-hero-content">
+            <h1 className="fullscreen-title">AI-Driven Stem Cell Differentiation</h1>
+            <p className="fullscreen-subtitle">Real-Time, Accurate, Scalable.</p>
+            <div className="fullscreen-actions">
+              <a href="#waitlist" className="button button-primary">
+                Join Waitlist
+              </a>
+              <a href="#hero" className="button button-ghost">
+                Learn More
+              </a>
+            </div>
           </div>
         </section>
 
