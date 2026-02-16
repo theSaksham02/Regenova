@@ -31,9 +31,23 @@ export async function POST(request: Request) {
       cache: "no-store",
     });
 
+    let upstream: { ok?: boolean; error?: string } | null = null;
+    try {
+      upstream = (await response.json()) as { ok?: boolean; error?: string };
+    } catch {
+      upstream = null;
+    }
+
     if (!response.ok) {
       return NextResponse.json(
         { ok: false, error: "Upstream submission failed" },
+        { status: 502 }
+      );
+    }
+
+    if (upstream && upstream.ok === false) {
+      return NextResponse.json(
+        { ok: false, error: upstream.error || "Upstream mail/send failed" },
         { status: 502 }
       );
     }
