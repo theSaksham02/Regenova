@@ -3,8 +3,48 @@
 import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 
+const WAITLIST_ENDPOINT = "/api/waitlist";
+type FormState = "idle" | "sending" | "success" | "error";
+
 export default function Home() {
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [formState, setFormState] = useState<FormState>("idle");
+
+  const submitForm = async (
+    event: React.FormEvent<HTMLFormElement>,
+    setState: (state: FormState) => void
+  ) => {
+    event.preventDefault();
+    if (event.currentTarget.dataset.busy === "true") return;
+
+    setState("sending");
+
+    try {
+      const formData = new FormData(event.currentTarget);
+      const payload = Object.fromEntries(formData.entries());
+
+      const response = await fetch(WAITLIST_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        event.currentTarget.reset();
+        setState("success");
+      } else {
+        setState("error");
+      }
+    } catch {
+      setState("error");
+    }
+  };
+
+  const handleWaitlistSubmit = (event: React.FormEvent<HTMLFormElement>) =>
+    submitForm(event, setFormState);
 
   return (
     <div className="page-wrapper">
@@ -51,60 +91,189 @@ export default function Home() {
       </nav>
 
       <main className="main-content">
+        {/* SECTION 1: HERO */}
         <section className="section-hero">
           <div className="container hero-container">
             <div className="hero-content">
               <h1 className="hero-heading text-gradient">
-                AI-Driven Precision<br />for Stem Cell Differentiation
+                AI-Driven Precision for<br />Stem Cell Differentiation
               </h1>
               <p className="hero-subtext">
-                Borrow against your entire DeFi portfolio... wait, no.<br />
-                Analyze stem cell morphology with research-grade transparency.
+                Regenova uses deep learning to analyze stem cell differentiation With speed, accuracy, and transparency.
               </p>
               <div className="hero-buttons">
                 <a href="#waitlist" className="main-button w-inline-block">
-                  <div>Join Research Waitlist</div>
-                </a>
-                <a href="#demo" className="secondary-button w-inline-block">
-                  <div>View Demo</div>
+                  <div>Join the Research Waitlist</div>
                 </a>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Placeholder for other sections to be styled later to match light theme */}
-        <section className="section-white" id="how-it-works">
+        {/* SECTION 2: WHAT IS REGENOVA (Problem -> Solution) */}
+        <section className="section-white" id="problem-solution">
           <div className="container">
-            <h2 className="section-heading">From Imaging to Insight</h2>
-            <div className="grid-3-col">
-              <div className="feature-card">
-                <div className="feature-number">01</div>
-                <h3>Upload</h3>
-                <p>Securely upload brightfield images to our cloud pipeline.</p>
+            <h2 className="section-heading">The Challenge vs. The Solution</h2>
+            <div className="grid-2-col split-panel">
+              <div className="panel-left">
+                <h3>The Problem</h3>
+                <ul className="list-problem">
+                  <li>Manual stem cell analysis</li>
+                  <li>Time-consuming & expensive</li>
+                  <li>Error-prone human review</li>
+                  <li>Not scalable for high-throughput</li>
+                </ul>
               </div>
-              <div className="feature-card">
-                <div className="feature-number">02</div>
-                <h3>Analyze</h3>
-                <p>Our CNN+LSTM models track temporal morphology changes.</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-number">03</div>
-                <h3>Report</h3>
-                <p>Receive detailed differentiation reports with heatmaps.</p>
+              <div className="panel-right">
+                <h3>The Solution</h3>
+                <ul className="list-solution">
+                  <li>AI-powered image analysis</li>
+                  <li>CNN + temporal modeling</li>
+                  <li>Real-time stage predictions</li>
+                  <li>Interpretable outputs (Heatmaps)</li>
+                </ul>
               </div>
             </div>
           </div>
         </section>
+
+        {/* SECTION 3: HOW IT WORKS */}
+        <section className="section-light" id="how-it-works">
+          <div className="container">
+            <h2 className="section-heading">How It Works</h2>
+            <div className="grid-4-col steps-grid">
+              <div className="step-card">
+                <div className="step-icon">1</div>
+                <h4>Image Input</h4>
+                <p>Upload brightfield stem cell images securely.</p>
+              </div>
+              <div className="step-card">
+                <div className="step-icon">2</div>
+                <h4>AI Processing</h4>
+                <p>CNN extracts morphology, LSTM tracks differentiation.</p>
+              </div>
+              <div className="step-card">
+                <div className="step-icon">3</div>
+                <h4>Prediction</h4>
+                <p>Instant differentiation stage classification.</p>
+              </div>
+              <div className="step-card">
+                <div className="step-icon">4</div>
+                <h4>Interpretability</h4>
+                <p>Heatmaps highlight key decision regions.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 4: WHY IT MATTERS (IMPACT) */}
+        <section className="section-white" id="impact">
+          <div className="container">
+            <h2 className="section-heading">Why It Matters</h2>
+            <div className="grid-3-col impact-stats">
+              <div className="stat-card">
+                <h3>60% Faster</h3>
+                <p>Drastically reduced analysis time.</p>
+              </div>
+              <div className="stat-card">
+                <h3>&gt;90% Accuracy</h3>
+                <p>Validated against expert benchmarks.</p>
+              </div>
+              <div className="stat-card">
+                <h3>Scalable</h3>
+                <p>Non-invasive, ethical AI workflows.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 5: WHO IT'S FOR */}
+        <section className="section-light" id="audience">
+          <div className="container">
+            <h2 className="section-heading">Who It&apos;s For</h2>
+            <div className="grid-3-col audience-grid">
+              <div className="audience-card">
+                <h4>Academic Research Labs</h4>
+              </div>
+              <div className="audience-card">
+                <h4>Biotech & Pharma R&D</h4>
+              </div>
+              <div className="audience-card">
+                <h4>Regenerative Medicine</h4>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 6: RESEARCH-FIRST POSITIONING */}
+        <section className="section-white" id="research">
+          <div className="container">
+            <div className="research-box">
+              <p className="research-text">
+                <strong>Regenova is a research-driven initiative.</strong><br />
+                We are currently validating our models, publishing results, and collaborating with academic and industry partners before productization.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 7: WAITLIST */}
+        <section className="section-cta" id="waitlist">
+          <div className="container">
+            <div className="cta-box">
+              <h2>Join the Regenova Research Waitlist</h2>
+              <p>Be among the first researchers to collaborate, test, or review our AI models.</p>
+
+              <form
+                className="waitlist-form-simple"
+                action={WAITLIST_ENDPOINT}
+                method="POST"
+                onSubmit={handleWaitlistSubmit}
+              >
+                <div className="form-row">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                    disabled={formState === "sending" || formState === "success"}
+                  />
+                  <select name="role" defaultValue="Researcher">
+                    <option value="Researcher">Researcher</option>
+                    <option value="Industry">Industry</option>
+                    <option value="Student">Student</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <button type="submit" className="main-button" disabled={formState === "sending" || formState === "success"}>
+                  {formState === "sending" ? "Joining..." : formState === "success" ? "Joined!" : "Request Early Access"}
+                </button>
+                {formState === "success" && <p className="success-msg">Thanks! We&apos;ll be in touch.</p>}
+                {formState === "error" && <p className="error-msg">Something went wrong. Try again.</p>}
+              </form>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 8: ABOUT/TEAM */}
+        <section className="section-light" id="about">
+          <div className="container center-text">
+            <p className="team-text">
+              Built by an interdisciplinary team working at the intersection of AI and regenerative medicine.<br />
+              <span className="sub-team">In collaboration with academic mentors.</span>
+            </p>
+          </div>
+        </section>
+
       </main>
 
-      <footer className="footer">
+      <footer className="footer" id="contact">
         <div className="container">
           <div className="footer-content">
-            <span>Regenova &copy; 2026</span>
+            <div className="copyright">Regenova &copy; 2026</div>
             <div className="footer-links">
-              <a href="#">Privacy</a>
-              <a href="#">Terms</a>
+              <a href="mailto:research@regenova.ai">Research Collaboration Enquiries</a>
+              <a href="https://linkedin.com">LinkedIn</a>
             </div>
           </div>
         </div>

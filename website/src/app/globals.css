@@ -313,6 +313,199 @@ a {
   line-height: 1.5;
 }
 
+/* 
+  --------------------------------------------------
+  BLUEPRINT SECTIONS (Refined)
+  -------------------------------------------------- 
+*/
+.section-light {
+  background: #f9f9f9;
+  padding: 100px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.grid-2-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 60px;
+}
+
+.split-panel h3 {
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.list-problem li {
+  list-style: none;
+  padding-left: 24px;
+  position: relative;
+  margin-bottom: 12px;
+  color: #cc0000;
+  /* Subtle alert color for problem */
+}
+
+.list-problem li::before {
+  content: "✖";
+  position: absolute;
+  left: 0;
+  color: #cc0000;
+}
+
+.list-solution li {
+  list-style: none;
+  padding-left: 24px;
+  position: relative;
+  margin-bottom: 12px;
+  color: #009933;
+  /* Positive color for solution */
+}
+
+.list-solution li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #009933;
+}
+
+/* Steps Grid */
+.grid-4-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+}
+
+.step-card {
+  text-align: center;
+  padding: 20px;
+}
+
+.step-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--foreground);
+  color: var(--background);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* Impact Stats */
+.impact-stats {
+  text-align: center;
+}
+
+.stat-card h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #000 0%, #666 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Audience */
+.audience-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  border: 1px solid #eee;
+}
+
+.audience-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Research Box */
+.research-box {
+  background: #f0f7ff;
+  padding: 40px;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-style: italic;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* Waitlist CTA */
+.section-cta {
+  padding: 120px 0;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.cta-box h2 {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.waitlist-form-simple {
+  max-width: 600px;
+  margin: 40px auto 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.waitlist-form-simple input,
+.waitlist-form-simple select {
+  flex: 1;
+  padding: 16px 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+}
+
+.waitlist-form-simple button {
+  width: 100%;
+}
+
+.success-msg {
+  color: green;
+  margin-top: 10px;
+}
+
+.error-msg {
+  color: red;
+  margin-top: 10px;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.team-text {
+  color: var(--secondary);
+  line-height: 1.6;
+}
+
+.sub-team {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.copyright {
+  font-weight: 500;
+}
+
 .footer {
   background: #f9f9f9;
   padding: 60px 0;
