@@ -40,7 +40,10 @@ export async function POST(request: Request) {
       upstream = null;
     }
 
-    if (jsonAttempt.ok && (!upstream || upstream.ok !== false)) {
+    const jsonAttemptAccepted =
+      jsonAttempt.status < 500 && (!upstream || upstream.ok !== false);
+
+    if (jsonAttemptAccepted) {
       return NextResponse.json({ ok: true });
     }
 
@@ -73,7 +76,11 @@ export async function POST(request: Request) {
       fallbackUpstream = null;
     }
 
-    if (formAttempt.ok && (!fallbackUpstream || fallbackUpstream.ok !== false)) {
+    const formAttemptAccepted =
+      formAttempt.status < 500 &&
+      (!fallbackUpstream || fallbackUpstream.ok !== false);
+
+    if (formAttemptAccepted) {
       return NextResponse.json({ ok: true });
     }
 
