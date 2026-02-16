@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       upstream = null;
     }
 
-    if (jsonAttempt.ok && upstream?.ok === true) {
+    if (jsonAttempt.ok && (!upstream || upstream.ok !== false)) {
       return NextResponse.json({ ok: true });
     }
 
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
       fallbackUpstream = null;
     }
 
-    if (formAttempt.ok && fallbackUpstream?.ok === true) {
+    if (formAttempt.ok && (!fallbackUpstream || fallbackUpstream.ok !== false)) {
       return NextResponse.json({ ok: true });
     }
 
