@@ -15,12 +15,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Project 0 | DeFi-Native Prime Broker",
+  title: "Regenova | AI-Driven Stem Cell Differentiation",
   description:
-    "Access multi-venue DeFi with unified margin across your entire portfolio.",
+    "AI-driven precision for stem cell differentiation. Speed, accuracy, and transparency for researchers.",
   icons: {
-    icon: [{ url: "/favicon.ico?v=regenova-r" }],
-    apple: [{ url: "/logo_trans.jpg", type: "image/jpeg" }],
+    icon: [{ url: "/favicon.ico" }],
   },
 };
 
