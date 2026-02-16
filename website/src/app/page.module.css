@@ -1,0 +1,135 @@
+.page {
+  min-height: 100vh;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  align-items: center;
+  border-bottom: 1px solid #222;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navLinks a {
+  color: #888;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.navLinks a:hover {
+  color: #fff;
+}
+
+.btnLaunch {
+  background-color: #fff;
+  color: #000 !important;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  transition: opacity 0.2s ease;
+}
+
+.btnLaunch:hover {
+  opacity: 0.85;
+}
+
+.hero {
+  text-align: center;
+  padding: 120px 20px;
+}
+
+.hero h1 {
+  margin: 0 0 20px;
+  font-size: clamp(40px, 8vw, 64px);
+  line-height: 1.1;
+}
+
+.hero p {
+  margin: 0 auto 40px;
+  max-width: 600px;
+  color: #888;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.5;
+}
+
+.btnHero {
+  display: inline-block;
+  padding: 15px 30px;
+  font-size: 16px;
+}
+
+.venues {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #666;
+  font-size: 18px;
+}
+
+.features {
+  display: flex;
+  justify-content: space-around;
+  gap: 24px;
+  padding: 80px 40px;
+  background-color: #0a0a0a;
+  border-top: 1px solid #111;
+}
+
+.featureBox {
+  max-width: 30%;
+}
+
+.featureBox h3 {
+  margin: 0 0 15px;
+  font-size: 20px;
+}
+
+.featureBox p {
+  margin: 0;
+  color: #888;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .header {
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hero {
+    padding: 80px 20px;
+  }
+
+  .features {
+    flex-direction: column;
+    padding: 60px 20px;
+  }
+
+  .featureBox {
+    max-width: 100%;
+  }
+}
