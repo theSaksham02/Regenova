@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${montserrat.variable} ${inter.variable}`}>
+      <body className={`${montserrat.variable} ${inter.variable}`} suppressHydrationWarning>
         {children}
       </body>
     </html>

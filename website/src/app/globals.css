@@ -284,16 +284,52 @@ a {
   gap: 40px;
 }
 
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: var(--font-body);
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  /* Native smooth scroll */
+}
+
+/* ... existing code ... */
+
 .feature-card {
   padding: 32px;
   background: #fdfdfd;
   border: 1px solid #eaeaea;
   border-radius: 24px;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  /* Softer, deeper shadow */
+  border-color: rgba(59, 130, 246, 0.3);
+  /* Subtle accent glow */
+}
+
+.feature-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.feature-card:hover::after {
+  transform: translateX(100%);
 }
 
 .feature-number {
@@ -301,6 +337,11 @@ a {
   font-size: 1.5rem;
   color: #e5e5e5;
   margin-bottom: 16px;
+  transition: color 0.3s ease;
+}
+
+.feature-card:hover .feature-number {
+  color: var(--accent);
 }
 
 .feature-card h3 {
@@ -311,6 +352,12 @@ a {
 .feature-card p {
   color: var(--secondary);
   line-height: 1.5;
+}
+
+/* Button Improvements */
+.main-button:active,
+.secondary-button:active {
+  transform: scale(0.96) translateY(0);
 }
 
 /* 
