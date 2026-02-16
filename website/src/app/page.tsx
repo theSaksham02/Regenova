@@ -74,7 +74,7 @@ export default function Home() {
   const pipelineNodeRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const stepCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [formState, setFormState] = useState<FormState>("idle");
-  const [footerState, setFooterState] = useState<FormState>("idle");
+  const [ctaState, setCtaState] = useState<FormState>("idle");
   const [typedHeadline, setTypedHeadline] = useState("");
   const [activeSection, setActiveSection] =
     useState<(typeof NAV_SECTIONS)[number]>("top");
@@ -188,7 +188,7 @@ export default function Home() {
       },
       {
         threshold: [0.35, 0.5, 0.75],
-        rootMargin: "-24% 0px -56% 0px",
+        rootMargin: "-24% 0px -42% 0px",
       }
     );
 
@@ -512,9 +512,8 @@ export default function Home() {
 
   const handleWaitlistSubmit = (event: React.FormEvent<HTMLFormElement>) =>
     submitForm(event, setFormState);
-
-  const handleFooterSubmit = (event: React.FormEvent<HTMLFormElement>) =>
-    submitForm(event, setFooterState);
+  const handleCtaSubmit = (event: React.FormEvent<HTMLFormElement>) =>
+    submitForm(event, setCtaState);
 
   return (
     <div className="page" ref={pageRef}>
@@ -773,9 +772,9 @@ export default function Home() {
 
         <section className="section" id="how" ref={howRef}>
           <div className="container">
-            <div className="section-header">
-              <h2>How it works</h2>
-              <p>
+            <div className="section-header" data-reveal-group>
+              <h2 className="reveal reveal-heading" data-reveal>How it works</h2>
+              <p className="reveal" data-reveal>
                 A streamlined pipeline designed for researchers who need
                 precision without black-box ambiguity.
               </p>
@@ -820,9 +819,9 @@ export default function Home() {
 
         <section className="section" id="features">
           <div className="container">
-            <div className="section-header">
-              <h2>Platform features</h2>
-              <p>
+            <div className="section-header" data-reveal-group>
+              <h2 className="reveal reveal-heading" data-reveal>Platform features</h2>
+              <p className="reveal" data-reveal>
                 Built for research teams that need speed, transparency, and
                 integration flexibility.
               </p>
@@ -848,9 +847,9 @@ export default function Home() {
 
         <section className="section" id="story">
           <div className="container">
-            <div className="section-header">
-              <h2>From imaging to insight</h2>
-              <p>Three movements that translate cells into actionable signal.</p>
+            <div className="section-header" data-reveal-group>
+              <h2 className="reveal reveal-heading" data-reveal>From imaging to insight</h2>
+              <p className="reveal" data-reveal>Three movements that translate cells into actionable signal.</p>
             </div>
             <div className="story-grid" data-reveal-group>
               <div className="story-card reveal tilt-card" data-reveal>
@@ -874,9 +873,9 @@ export default function Home() {
 
         <section className="section" id="impact">
           <div className="container">
-            <div className="section-header">
-              <h2>Why it matters</h2>
-              <p>
+            <div className="section-header" data-reveal-group>
+              <h2 className="reveal reveal-heading" data-reveal>Why it matters</h2>
+              <p className="reveal" data-reveal>
                 Regenova shortens discovery cycles while staying aligned with
                 ethical and non-invasive research practices.
               </p>
@@ -899,9 +898,9 @@ export default function Home() {
         </section>
         <section className="section stats-section" id="stats" ref={statsRef}>
           <div className="container">
-            <div className="section-header">
-              <h2>Key metrics</h2>
-              <p>Measured outcomes and market opportunity for Regenova.</p>
+            <div className="section-header" data-reveal-group>
+              <h2 className="reveal reveal-heading" data-reveal>Key metrics</h2>
+              <p className="reveal" data-reveal>Measured outcomes and market opportunity for Regenova.</p>
             </div>
             <div className="stats-grid" data-reveal-group>
               <article className="stats-card reveal tilt-card" data-reveal>
@@ -923,13 +922,12 @@ export default function Home() {
           </div>
         </section>
         <div className="section-divider" aria-hidden="true" />
-        <div className="section-divider" aria-hidden="true" />
 
         <section className="section" id="audience">
           <div className="container">
-            <div className="section-header">
-              <h2>Who it&apos;s for</h2>
-              <p>Focused on teams who demand accuracy and traceability.</p>
+            <div className="section-header" data-reveal-group>
+              <h2 className="reveal reveal-heading" data-reveal>Who it&apos;s for</h2>
+              <p className="reveal" data-reveal>Focused on teams who demand accuracy and traceability.</p>
             </div>
             <div className="audience-grid" data-reveal-group>
               <div className="audience-card reveal tilt-card" data-reveal>
@@ -963,9 +961,9 @@ export default function Home() {
 
         <section className="section" id="trust">
           <div className="container">
-            <div className="section-header">
-              <h2>Early support signals</h2>
-              <p>
+            <div className="section-header" data-reveal-group>
+              <h2 className="reveal reveal-heading" data-reveal>Early support signals</h2>
+              <p className="reveal" data-reveal>
                 We are in active conversation with research stakeholders ahead
                 of formal pilot launches.
               </p>
@@ -986,6 +984,62 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <section className="section">
+          <div className="container">
+            <div className="cta-banner reveal" data-reveal>
+              <p className="cta-eyebrow">Beta Access</p>
+              <h2>
+                Regenova is in beta.
+                <br />
+                Join the waitlist and get exclusive early access.
+              </h2>
+              <form
+                className="cta-form"
+                action={WAITLIST_ENDPOINT}
+                method="POST"
+                onSubmit={handleCtaSubmit}
+                aria-busy={ctaState === "sending"}
+                data-busy={ctaState === "sending"}
+              >
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="you@lab.edu"
+                  required
+                  disabled={ctaState === "sending" || ctaState === "success"}
+                />
+                <button
+                  type="submit"
+                  className="button button-primary"
+                  disabled={ctaState === "sending" || ctaState === "success"}
+                >
+                  {ctaState === "sending"
+                    ? "Sending..."
+                    : ctaState === "success"
+                      ? "You're in"
+                      : "Join Waitlist"}
+                </button>
+                <input
+                  type="hidden"
+                  name="message"
+                  value="New CTA banner signup from Regenova website."
+                />
+                <input type="hidden" name="source" value="regenova-cta-banner" />
+                {ctaState === "success" && (
+                  <p className="form-status success" role="status">
+                    You&apos;re in. We&apos;ll send updates to your inbox.
+                  </p>
+                )}
+                {ctaState === "error" && (
+                  <p className="form-status error" role="status">
+                    Something went wrong. Please try again.
+                  </p>
+                )}
+              </form>
+            </div>
+          </div>
+        </section>
+        <div className="section-divider" aria-hidden="true" />
 
         <section className="section" id="waitlist">
           <div className="container">
@@ -1080,171 +1134,37 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section legal-section" id="privacy-policy">
-          <div className="container legal-grid" data-reveal-group>
-            <article className="legal-card reveal tilt-card" data-reveal>
-              <p className="legal-kicker">Privacy Policy</p>
-              <h3>Regenova Privacy Policy</h3>
-              <p className="legal-meta">
-                Effective Date: 12th May, 2025 | Company: Regenova
-              </p>
-              <p>
-                Regenova is committed to protecting your privacy and safeguarding
-                your data. This policy explains what we collect, how we use it,
-                and how we secure it when you use our website.
-              </p>
-              <h4>1. Information We Collect</h4>
-              <ul className="legal-list">
-                <li>Name and email address submitted via waitlist or contact forms.</li>
-                <li>Professional affiliation or organization, if voluntarily shared.</li>
-                <li>Website analytics data through cookies or similar tools.</li>
-              </ul>
-              <p>
-                We do not collect sensitive biomedical, patient, or clinical data
-                through this website.
-              </p>
-              <h4>2. How We Use Information</h4>
-              <ul className="legal-list">
-                <li>Provide updates regarding Regenova research and product direction.</li>
-                <li>Respond to collaboration, research, or partnership inquiries.</li>
-                <li>Improve website performance and user experience.</li>
-                <li>Share seed and early-stage funding updates where relevant.</li>
-              </ul>
-              <h4>3. Data Protection</h4>
-              <p>
-                Data is stored using reasonable technical and organizational
-                safeguards. Regenova does not sell personal data and does not
-                disclose personal data to third parties without consent, except
-                where legally required.
-              </p>
-              <h4>4. Data Retention and Rights</h4>
-              <p>
-                We retain submitted data only as long as necessary for the
-                purposes above. You may request access, correction, or deletion
-                of your data by contacting us.
-              </p>
-              <h4>5. Contact</h4>
-              <p>
-                For privacy questions or data requests, contact:
-                {" "}
-                <a href="mailto:research@regenova.ai">research@regenova.ai</a>
-              </p>
-            </article>
-
-            <article className="legal-card reveal tilt-card" data-reveal id="terms-of-service">
-              <p className="legal-kicker">Terms & Conditions</p>
-              <h3>Regenova Website Terms of Use</h3>
-              <p className="legal-meta">Company: Regenova</p>
-              <p>
-                By using this website, you agree to the following terms and
-                conditions.
-              </p>
-              <h4>1. Informational Use</h4>
-              <p>
-                Website content is provided for informational purposes only and
-                does not constitute medical, clinical, legal, or regulatory
-                advice.
-              </p>
-              <h4>2. Intellectual Property</h4>
-              <p>
-                All website text, graphics, research concepts, and system designs
-                are the intellectual property of Regenova. Unauthorized
-                reproduction, distribution, or commercial use is prohibited.
-              </p>
-              <h4>3. Forward-Looking Statements</h4>
-              <p>
-                Any mention of funding, partnerships, timelines, or future
-                capabilities is forward-looking and may change without notice.
-              </p>
-              <h4>4. No Warranty</h4>
-              <p>
-                Regenova makes no warranties regarding completeness, reliability,
-                or accuracy of website content and may update content at any time.
-              </p>
-              <h4>5. Limitation of Liability</h4>
-              <p>
-                Regenova is not liable for indirect, incidental, or consequential
-                damages arising from website use, to the extent permitted by law.
-              </p>
-              <h4>6. Governing Use</h4>
-              <p>
-                Continued use of this website indicates acceptance of the latest
-                posted terms and policies.
-              </p>
-            </article>
-          </div>
-        </section>
       </main>
 
       <footer className="site-footer" id="contact">
-        <div className="container footer-top">
-          <div className="footer-left">
-            <p className="footer-title">Get latest updates on Regenova.</p>
-            <form
-              className="footer-form"
-              action={WAITLIST_ENDPOINT}
-              method="POST"
-              onSubmit={handleFooterSubmit}
-              aria-busy={footerState === "sending"}
-              data-busy={footerState === "sending"}
-            >
-              <label className="footer-label" htmlFor="footer-email">
-                Enter your email
-              </label>
-              <div className="footer-input-row">
-                <input
-                  id="footer-email"
-                  type="email"
-                  name="email"
-                  placeholder="you@lab.edu"
-                  required
-                  disabled={footerState === "sending" || footerState === "success"}
-                />
-                <button
-                  type="submit"
-                  className="footer-submit"
-                  disabled={footerState === "sending" || footerState === "success"}
-                >
-                  {footerState === "sending"
-                    ? "Sending..."
-                    : footerState === "success"
-                      ? "You&apos;re in"
-                      : "Sign up"}
-                </button>
-              </div>
-              <input
-                type="hidden"
-                name="message"
-                value="New footer updates signup from Regenova website."
-              />
-              <input type="hidden" name="source" value="regenova-footer" />
-              {footerState === "success" && (
-                <p className="form-status success" role="status">
-                  Thanks. We&apos;ll send updates here.
-                </p>
-              )}
-              {footerState === "error" && (
-                <p className="form-status error" role="status">
-                  Something went wrong. Please try again.
-                </p>
-              )}
-            </form>
+        <div className="container footer-grid reveal" data-reveal>
+          <div className="footer-column">
+            <div className="footer-brandline">
+              <img src="/image.png" alt="Regenova logo" />
+              <span>Regenova</span>
+            </div>
+            <p className="footer-tagline">
+              AI-driven stem cell differentiation for transparent, scalable research.
+            </p>
           </div>
-          <div className="footer-links-group">
-            <div>
-              <p className="footer-link-title">Research</p>
-              <a href="#research">Program</a>
-              <a href="#how">Method</a>
-              <a href="#story">Insights</a>
-            </div>
-            <div>
-              <p className="footer-link-title">Connect</p>
-              <a href="mailto:research@regenova.ai">Email</a>
-              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
-                LinkedIn
-              </a>
-              <a href="#waitlist">Collaboration</a>
-            </div>
+          <div className="footer-column">
+            <p className="footer-link-title">Links</p>
+            <a href="#top">Home</a>
+            <a href="#problem">About</a>
+            <a href="#features">Features</a>
+            <a href="#contact">Contact</a>
+            <a href="/privacy">Privacy</a>
+          </div>
+          <div className="footer-column">
+            <p className="footer-link-title">Social</p>
+            <a href="mailto:research@regenova.ai">
+              <span className="footer-social-icon" aria-hidden="true">✉</span>
+              Email
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+              <span className="footer-social-icon" aria-hidden="true">in</span>
+              LinkedIn
+            </a>
           </div>
         </div>
         <div className="container footer-bottom">
@@ -1253,10 +1173,6 @@ export default function Home() {
             <a href="/terms">Terms of Service</a>
             <span>Regenova (c) 2026</span>
           </div>
-        </div>
-        <div className="footer-brand">
-          <img src="/image.png" alt="Regenova logo" />
-          <span>Regenova</span>
         </div>
       </footer>
 
