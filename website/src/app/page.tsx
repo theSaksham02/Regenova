@@ -14,25 +14,52 @@ const NAV_SECTIONS = ["top", "problem", "how", "stats", "contact"] as const;
 const PIPELINE_STEPS = [
   {
     number: "01",
-    title: "Image Input",
+    icon: "🖼",
+    title: "Upload Image",
     body: "Upload brightfield stem cell images securely.",
   },
   {
     number: "02",
-    title: "AI Processing",
-    body: "AI models process morphology and temporal progression.",
+    icon: "🧠",
+    title: "AI Analyzes (CNN + LSTM)",
+    body: "Morphology and temporal progression are modeled automatically.",
   },
   {
     number: "03",
-    title: "Prediction",
-    body: "Get stage classification and progression scoring in real time.",
+    icon: "📊",
+    title: "Predictions & Heatmaps",
+    body: "Get stage predictions with interpretable visual heatmaps.",
   },
   {
     number: "04",
-    title: "Interpretability",
-    body: "Review heatmaps to understand each decision pathway.",
+    icon: "📄",
+    title: "Download / Report",
+    body: "Export analysis results for reporting and collaboration.",
   },
 ];
+
+const FEATURE_CARDS = [
+  {
+    icon: "⚡",
+    title: "Real-Time Analysis",
+    body: "Run inference live across incoming stem cell image streams.",
+  },
+  {
+    icon: "🔍",
+    title: "Interpretable Outputs (Grad-CAM)",
+    body: "See model focus regions with transparent decision support.",
+  },
+  {
+    icon: "🧱",
+    title: "Scalable Architecture",
+    body: "Designed for high-throughput datasets and parallel workflows.",
+  },
+  {
+    icon: "🔌",
+    title: "API / Integration Ready",
+    body: "Connect with existing lab systems and downstream pipelines.",
+  },
+] as const;
 
 type FormState = "idle" | "sending" | "success" | "error";
 
@@ -769,19 +796,50 @@ export default function Home() {
               {PIPELINE_STEPS.map((step, index) => (
                 <div
                   key={step.number}
-                  className="step-card reveal"
+                  className="step-card reveal reveal-scale"
                   data-reveal
                   ref={(node) => {
                     stepCardRefs.current[index] = node;
                   }}
                 >
                   <span className="step-number">{step.number}</span>
+                  <span className="step-icon" aria-hidden="true">
+                    {step.icon}
+                  </span>
                   <h4>{step.title}</h4>
                   <p>{step.body}</p>
                   <div className="step-progress">
                     <span />
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        <div className="section-divider" aria-hidden="true" />
+
+        <section className="section" id="features">
+          <div className="container">
+            <div className="section-header">
+              <h2>Platform features</h2>
+              <p>
+                Built for research teams that need speed, transparency, and
+                integration flexibility.
+              </p>
+            </div>
+            <div className="features-grid" data-reveal-group>
+              {FEATURE_CARDS.map((feature) => (
+                <article
+                  key={feature.title}
+                  className="feature-card reveal reveal-scale tilt-card"
+                  data-reveal
+                >
+                  <span className="feature-icon" aria-hidden="true">
+                    {feature.icon}
+                  </span>
+                  <h4>{feature.title}</h4>
+                  <p>{feature.body}</p>
+                </article>
               ))}
             </div>
           </div>
