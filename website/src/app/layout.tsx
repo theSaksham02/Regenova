@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+// import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 
-const montserrat = Montserrat({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-});
+// const montserrat = Montserrat({
+//   variable: "--font-display",
+//   subsets: ["latin"],
+//   weight: ["500", "600", "700", "800"],
+// });
 
-const inter = Inter({
-  variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-});
+// const inter = Inter({
+//   variable: "--font-body",
+//   subsets: ["latin"],
+//   weight: ["400", "500", "600"],
+// });
 
 export const metadata: Metadata = {
   title: "Regenova | AI-Driven Stem Cell Differentiation",
@@ -30,7 +30,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${montserrat.variable} ${inter.variable}`} suppressHydrationWarning>
+      {/* <body className={`${montserrat.variable} ${inter.variable}`} suppressHydrationWarning> */}
+      <body className="font-sans" suppressHydrationWarning>
         {children}
       </body>
     </html>

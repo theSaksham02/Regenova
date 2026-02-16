@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 
 const WAITLIST_ENDPOINT = "/api/waitlist";
 type FormState = "idle" | "sending" | "success" | "error";
@@ -83,6 +84,7 @@ export default function Home() {
           <div className="nav-links">
             <a href="#how-it-works" className="nav-link">How it Works</a>
             <a href="#impact" className="nav-link">Impact</a>
+            <Link href="/login" className="nav-link">Login</Link>
             <a href="mailto:research@regenova.ai" className="main-button small w-inline-block">
               <div>Get in Touch</div>
             </a>
