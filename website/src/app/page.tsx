@@ -3,7 +3,8 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xqedqvdk";
+const WAITLIST_ENDPOINT =
+  "https://script.google.com/macros/s/AKfycbxjxDr87tyJkwQCe9EDdDxZVu62PNd5nEen6G_25g0KNkZwXMa-YXnN4A3tcZ-1we46/exec";
 const HERO_HEADLINE = "AI-Driven Precision for Stem Cell Differentiation";
 const HERO_TAGLINES = [
   "AI that sees what humans miss.",
@@ -442,10 +443,15 @@ export default function Home() {
 
     try {
       const formData = new FormData(event.currentTarget);
-      const response = await fetch(FORMSPREE_ENDPOINT, {
+      const payload = Object.fromEntries(formData.entries());
+
+      const response = await fetch(WAITLIST_ENDPOINT, {
         method: "POST",
-        body: formData,
-        headers: { Accept: "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -877,7 +883,7 @@ export default function Home() {
               </div>
               <form
                 className="waitlist-form"
-                action={FORMSPREE_ENDPOINT}
+                action={WAITLIST_ENDPOINT}
                 method="POST"
                 onSubmit={handleWaitlistSubmit}
                 aria-busy={formState === "sending"}
@@ -1060,7 +1066,7 @@ export default function Home() {
             <p className="footer-title">Get latest updates on Regenova.</p>
             <form
               className="footer-form"
-              action={FORMSPREE_ENDPOINT}
+              action={WAITLIST_ENDPOINT}
               method="POST"
               onSubmit={handleFooterSubmit}
               aria-busy={footerState === "sending"}
