@@ -3,7 +3,7 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/REPLACE_ME";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xqedqvdk";
 const HERO_HEADLINE = "AI-Driven Precision for Stem Cell Differentiation";
 const HERO_TAGLINES = [
   "AI that sees what humans miss.",
@@ -917,6 +917,11 @@ export default function Home() {
                       ? "You&apos;re in"
                       : "Request Early Access"}
                 </button>
+                <input
+                  type="hidden"
+                  name="message"
+                  value="New waitlist signup from Regenova website."
+                />
                 <input type="hidden" name="source" value="regenova-waitlist" />
                 {formState === "success" && (
                   <p className="form-status success" role="status">
@@ -1085,6 +1090,11 @@ export default function Home() {
                       : "Sign up"}
                 </button>
               </div>
+              <input
+                type="hidden"
+                name="message"
+                value="New footer updates signup from Regenova website."
+              />
               <input type="hidden" name="source" value="regenova-footer" />
               {footerState === "success" && (
                 <p className="form-status success" role="status">
