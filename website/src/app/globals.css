@@ -255,51 +255,72 @@ a {
   VIDEO BACKGROUND (STICKY)
   --------------------------------------------------
 */
+/* 0.xyz Style Tech Grid & Active Lines */
 .video-background-wrapper {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   z-index: -1;
   overflow: hidden;
+  background: #fdfdfd;
+}
+
+.tech-grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 60px 60px;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Active "Scanning" Line */
+.active-scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.06) 50%, transparent);
+  animation: scan 8s linear infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
 }
 
 .hero-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 1.5s ease;
+  opacity: 0.1;
+  /* Very subtle texture */
+  filter: grayscale(100%) contrast(1.2);
 }
 
-.hero-video.loaded {
-  opacity: 1;
-}
-
-/* Sophisticated Overlays from 0.xyz */
 .video-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  display: none;
+  /* Hide old overlays */
 }
 
-.video-overlay.vertical {
-  background: linear-gradient(to bottom,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 0.2) 20%,
-      rgba(255, 255, 255, 0) 50%,
-      rgba(255, 255, 255, 1) 100%);
-}
 
-.video-overlay.horizontal {
-  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(255, 255, 255, 0.8) 100%);
-}
-
-.video-overlay.circle {
-  /* Subtle vignetting */
-  background: radial-gradient(circle at center, transparent, rgba(255, 255, 255, 0.2));
-}
 
 
 /* 

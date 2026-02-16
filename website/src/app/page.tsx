@@ -58,6 +58,8 @@ export default function Home() {
       </Head>
 
       <div className="video-background-wrapper">
+        <div className="tech-grid-overlay" />
+        <div className="active-scan-line" />
         <video
           className={`hero-video ${videoLoaded ? "loaded" : ""}`}
           autoPlay
@@ -68,9 +70,6 @@ export default function Home() {
         >
           <source src="/hero-light.mp4" type="video/mp4" />
         </video>
-        <div className="video-overlay vertical" />
-        <div className="video-overlay horizontal" />
-        <div className="video-overlay circle" />
       </div>
 
       <nav className="navbar">
@@ -97,9 +96,6 @@ export default function Home() {
         <section className="section-hero">
           <div className="container hero-container">
             <div className="hero-content">
-              <div className="hero-brand-mark">
-                <img src="/logo_trans.jpg" alt="Regenova Mark" />
-              </div>
               <h1 className="hero-heading text-gradient">
                 AI-Driven Precision for<br />Stem Cell Differentiation
               </h1>
