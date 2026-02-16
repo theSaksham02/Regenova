@@ -176,6 +176,21 @@ a {
 }
 
 /* The Massive "Abcoracle" look */
+.hero-brand-mark {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.hero-brand-mark img {
+  height: 80px;
+  width: auto;
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+  border-radius: 12px;
+  /* Slight rounding if square */
+}
+
 .hero-heading {
   font-family: var(--font-heading);
   font-size: clamp(3rem, 5vw, 4.5rem);

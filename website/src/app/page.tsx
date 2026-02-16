@@ -95,6 +95,9 @@ export default function Home() {
         <section className="section-hero">
           <div className="container hero-container">
             <div className="hero-content">
+              <div className="hero-brand-mark">
+                <img src="/logo_trans.jpg" alt="Regenova Mark" />
+              </div>
               <h1 className="hero-heading text-gradient">
                 AI-Driven Precision for<br />Stem Cell Differentiation
               </h1>
