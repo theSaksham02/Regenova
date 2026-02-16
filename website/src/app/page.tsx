@@ -10,7 +10,7 @@ const HERO_TAGLINES = [
   "Built for regenerative medicine teams.",
   "Research-grade interpretability, not black-box output.",
 ];
-const NAV_SECTIONS = ["research", "how", "waitlist"] as const;
+const NAV_SECTIONS = ["top", "problem", "how", "stats", "contact"] as const;
 const PIPELINE_STEPS = [
   {
     number: "01",
@@ -38,7 +38,7 @@ type FormState = "idle" | "sending" | "success" | "error";
 
 export default function Home() {
   const pageRef = useRef<HTMLDivElement | null>(null);
-  const metricsRef = useRef<HTMLDivElement | null>(null);
+  const statsRef = useRef<HTMLElement | null>(null);
   const howRef = useRef<HTMLElement | null>(null);
   const heroRef = useRef<HTMLElement | null>(null);
   const heroCopyRef = useRef<HTMLDivElement | null>(null);
@@ -50,11 +50,13 @@ export default function Home() {
   const [footerState, setFooterState] = useState<FormState>("idle");
   const [typedHeadline, setTypedHeadline] = useState("");
   const [activeSection, setActiveSection] =
-    useState<(typeof NAV_SECTIONS)[number]>("research");
+    useState<(typeof NAV_SECTIONS)[number]>("top");
+  const [isScrolled, setIsScrolled] = useState(false);
   const [taglineIndex, setTaglineIndex] = useState(0);
   const [metricsStarted, setMetricsStarted] = useState(false);
   const [speedStat, setSpeedStat] = useState(0);
   const [accuracyStat, setAccuracyStat] = useState(0);
+  const [marketStat, setMarketStat] = useState(0);
 
   useEffect(() => {
     const page = pageRef.current;
@@ -168,7 +170,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const metricsNode = metricsRef.current;
+    const onScroll = () => setIsScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const metricsNode = statsRef.current;
     if (!metricsNode) return;
 
     const observer = new IntersectionObserver(
@@ -198,6 +207,7 @@ export default function Home() {
       const eased = 1 - Math.pow(1 - progress, 3);
       setSpeedStat(Math.round(60 * eased));
       setAccuracyStat(Math.round(90 * eased));
+      setMarketStat(Math.round(30 * eased));
 
       if (progress < 1) {
         requestAnimationFrame(tick);
@@ -513,7 +523,7 @@ export default function Home() {
         <div className="cursor-glow" />
       </div>
 
-      <header className="site-header">
+      <header className={`site-header${isScrolled ? " is-scrolled" : ""}`}>
         <div className="container nav">
           <div className="logo">
             <img
@@ -525,18 +535,36 @@ export default function Home() {
           </div>
           <nav className="nav-links">
             <a
-              href="#research"
-              className={activeSection === "research" ? "active" : undefined}
+              href="#top"
+              className={activeSection === "top" ? "active" : undefined}
             >
-              Research
+              Home
+            </a>
+            <a
+              href="#problem"
+              className={activeSection === "problem" ? "active" : undefined}
+            >
+              Solution
             </a>
             <a
               href="#how"
               className={activeSection === "how" ? "active" : undefined}
             >
-              Method
+              How It Works
             </a>
-            <a href="#waitlist" className="button button-small">
+            <a
+              href="#stats"
+              className={activeSection === "stats" ? "active" : undefined}
+            >
+              Stats
+            </a>
+            <a
+              href="#contact"
+              className={activeSection === "contact" ? "active" : undefined}
+            >
+              Contact
+            </a>
+            <a href="#waitlist" className="button button-small nav-waitlist">
               Join Waitlist
             </a>
           </nav>
@@ -624,28 +652,13 @@ export default function Home() {
                   Request Demo
                 </a>
               </div>
-              <div className="hero-metrics" ref={metricsRef}>
+              <div className="hero-metrics">
                 <div className="metric-card">
                   <div
                     className="metric-ring"
-                    style={
-                      { "--metric-progress": `${Math.min(speedStat, 100)}%` } as CSSProperties
-                    }
+                    style={{ "--metric-progress": "100%" } as CSSProperties}
                   >
-                    <span className="metric-value">{speedStat}%</span>
-                  </div>
-                  <span className="metric-label">Faster analysis</span>
-                </div>
-                <div className="metric-card">
-                  <div
-                    className="metric-ring"
-                    style={
-                      {
-                        "--metric-progress": `${Math.min(accuracyStat, 100)}%`,
-                      } as CSSProperties
-                    }
-                  >
-                    <span className="metric-value">{accuracyStat}%+</span>
+                    <span className="metric-value">90%+</span>
                   </div>
                   <span className="metric-label">Validated accuracy</span>
                 </div>
@@ -654,9 +667,18 @@ export default function Home() {
                     className="metric-ring"
                     style={{ "--metric-progress": "100%" } as CSSProperties}
                   >
-                    <span className="metric-value">Ethical</span>
+                    <span className="metric-value">60%</span>
                   </div>
-                  <span className="metric-label">Ethical AI</span>
+                  <span className="metric-label">Reduced analysis time</span>
+                </div>
+                <div className="metric-card">
+                  <div
+                    className="metric-ring"
+                    style={{ "--metric-progress": "100%" } as CSSProperties}
+                  >
+                    <span className="metric-value">$30B+</span>
+                  </div>
+                  <span className="metric-label">Market by 2030</span>
                 </div>
               </div>
             </div>
@@ -817,6 +839,32 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <section className="section stats-section" id="stats" ref={statsRef}>
+          <div className="container">
+            <div className="section-header">
+              <h2>Key metrics</h2>
+              <p>Measured outcomes and market opportunity for Regenova.</p>
+            </div>
+            <div className="stats-grid" data-reveal-group>
+              <article className="stats-card reveal tilt-card" data-reveal>
+                <span className="stats-icon" aria-hidden="true">◎</span>
+                <p className="stats-value">{accuracyStat}%+</p>
+                <p className="stats-label">Accuracy</p>
+              </article>
+              <article className="stats-card reveal tilt-card" data-reveal>
+                <span className="stats-icon" aria-hidden="true">◷</span>
+                <p className="stats-value">{speedStat}%</p>
+                <p className="stats-label">Reduced Time</p>
+              </article>
+              <article className="stats-card reveal tilt-card" data-reveal>
+                <span className="stats-icon" aria-hidden="true">$</span>
+                <p className="stats-value">${marketStat}B+</p>
+                <p className="stats-label">Market by 2030</p>
+              </article>
+            </div>
+          </div>
+        </section>
+        <div className="section-divider" aria-hidden="true" />
         <div className="section-divider" aria-hidden="true" />
 
         <section className="section" id="audience">
@@ -1070,7 +1118,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="site-footer">
+      <footer className="site-footer" id="contact">
         <div className="container footer-top">
           <div className="footer-left">
             <p className="footer-title">Get latest updates on Regenova.</p>
@@ -1154,9 +1202,6 @@ export default function Home() {
         </div>
       </footer>
 
-      <a className="floating-cta" href="#waitlist">
-        Join Waitlist →
-      </a>
     </div>
   );
 }
