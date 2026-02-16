@@ -320,19 +320,16 @@ export default function Home() {
                 <h5>PLATFORM</h5>
                 <a href="#how-it-works">Technology</a>
                 <a href="#impact">Impact</a>
-                <a href="#demo">Demo</a>
               </div>
               <div className="footer-column">
                 <h5>COMPANY</h5>
                 <a href="#about">About</a>
-                <a href="#research">Research</a>
+                <a href="#mission">Our Mission</a>
                 <a href="mailto:careers@regenova.ai">Careers</a>
               </div>
               <div className="footer-column">
                 <h5>CONNECT</h5>
-                <a href="https://twitter.com">Twitter</a>
-                <a href="https://linkedin.com">LinkedIn</a>
-                <a href="https://github.com">GitHub</a>
+                <a href="mailto:research@regenova.ai">Contact</a>
               </div>
             </div>
           </div>
